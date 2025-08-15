@@ -1,0 +1,438 @@
+@page
+@model WebRazon.Pages.ProductModel
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container my-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Electronics</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Wireless Headphones</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-md-6 mb-4">
+            <div class="main-image mb-3">
+                <img src="https://via.placeholder.com/600x600" class="img-fluid rounded" id="main-product-image" alt="Wireless Headphones">
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded thumbnail-image" alt="Thumbnail 1" onclick="changeImage(this)">
+                </div>
+                <div class="col-3">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded thumbnail-image" alt="Thumbnail 2" onclick="changeImage(this)">
+                </div>
+                <div class="col-3">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded thumbnail-image" alt="Thumbnail 3" onclick="changeImage(this)">
+                </div>
+                <div class="col-3">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded thumbnail-image" alt="Thumbnail 4" onclick="changeImage(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h1 class="mb-3">Wireless Noise Cancelling Headphones</h1>
+            <div class="d-flex align-items-center mb-3">
+                <div class="text-warning me-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="text-muted">4.5 (245 reviews)</span>
+            </div>
+
+            <div class="mb-3">
+                <h3 class="text-danger mb-0">$89.99</h3>
+                <span class="text-muted text-decoration-line-through">$129.99</span>
+                <span class="badge bg-success ms-2">Save 31%</span>
+            </div>
+
+            <div class="mb-4">
+                <p>Experience premium sound quality and active noise cancellation with our wireless headphones. Perfect for work, travel, or everyday use.</p>
+                <ul>
+                    <li>Active noise cancellation</li>
+                    <li>40-hour battery life</li>
+                    <li>Bluetooth 5.0 connectivity</li>
+                    <li>Built-in microphone for calls</li>
+                    <li>Comfortable over-ear design</li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <h5 class="mb-3">Available Colors</h5>
+                <div class="d-flex gap-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="color" id="color-black" checked>
+                        <label class="form-check-label" for="color-black">
+                            Black
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="color" id="color-white">
+                        <label class="form-check-label" for="color-white">
+                            White
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="color" id="color-blue">
+                        <label class="form-check-label" for="color-blue">
+                            Blue
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4">
+                <label for="quantity" class="form-label me-3 mb-0">Quantity:</label>
+                <div class="input-group" style="width: 130px">
+                    <button class="btn btn-outline-secondary" type="button" id="decrease-quantity">-</button>
+                    <input type="text" class="form-control text-center" id="quantity" value="1">
+                    <button class="btn btn-outline-secondary" type="button" id="increase-quantity">+</button>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-lg" type="button">
+                    <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type="button">
+                    <i class="fas fa-heart me-2"></i> Add to Wishlist
+                </button>
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-truck text-primary me-2"></i>
+                    <span>Free shipping for orders over $50</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-undo text-primary me-2"></i>
+                    <span>30-day free returns</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                    <span>1-year warranty included</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Description Tabs -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="specifications-tab" data-bs-toggle="tab" data-bs-target="#specifications" type="button" role="tab" aria-controls="specifications" aria-selected="false">Specifications</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews (245)</button>
+                </li>
+            </ul>
+            <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
+                <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    <h4>Product Description</h4>
+                    <p>Introducing our premium Wireless Noise Cancelling Headphones, designed for the ultimate audio experience. Whether you're working from home, commuting, or just relaxing with your favorite music, these headphones deliver exceptional sound quality and comfort.</p>
+                    
+                    <p>The active noise cancellation technology effectively blocks out ambient noise, allowing you to focus on what matters. With a remarkable 40-hour battery life, you can enjoy your music all day long without worrying about recharging.</p>
+                    
+                    <p>The plush over-ear design ensures comfort even during extended listening sessions, while the adjustable headband provides a perfect fit for any head size. The built-in microphone enables crystal-clear calls, and the intuitive controls let you easily manage your music playback and calls.</p>
+                    
+                    <p>These headphones feature the latest Bluetooth 5.0 technology for a stable, lag-free connection with your devices. They're compatible with smartphones, tablets, laptops, and other Bluetooth-enabled devices.</p>
+                </div>
+                <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                    <h4>Technical Specifications</h4>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <td>Model</td>
+                                <td>WH-1000X</td>
+                            </tr>
+                            <tr>
+                                <td>Driver Size</td>
+                                <td>40mm</td>
+                            </tr>
+                            <tr>
+                                <td>Frequency Response</td>
+                                <td>20Hz - 20,000Hz</td>
+                            </tr>
+                            <tr>
+                                <td>Impedance</td>
+                                <td>32 Ohm</td>
+                            </tr>
+                            <tr>
+                                <td>Sensitivity</td>
+                                <td>103dB</td>
+                            </tr>
+                            <tr>
+                                <td>Bluetooth Version</td>
+                                <td>5.0</td>
+                            </tr>
+                            <tr>
+                                <td>Battery Life</td>
+                                <td>40 hours (ANC on), 45 hours (ANC off)</td>
+                            </tr>
+                            <tr>
+                                <td>Charging Time</td>
+                                <td>2 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Weight</td>
+                                <td>250g</td>
+                            </tr>
+                            <tr>
+                                <td>Package Contents</td>
+                                <td>Headphones, Carrying Case, USB-C Charging Cable, 3.5mm Audio Cable, User Manual</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4>Customer Reviews</h4>
+                        <button class="btn btn-outline-primary">Write a Review</button>
+                    </div>
+                    
+                    <!-- Overall Rating Summary -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <h1 class="display-4">4.5</h1>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p>Based on 245 reviews</p>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">5 stars</span>
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ms-2">75%</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">4 stars</span>
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ms-2">15%</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">3 stars</span>
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 6%;" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ms-2">6%</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">2 stars</span>
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 3%;" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ms-2">3%</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">1 star</span>
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%;" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ms-2">1%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Individual Reviews -->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">Outstanding sound quality</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small">By John D. on September 15, 2023</p>
+                        <p>These headphones have exceeded my expectations! The sound quality is outstanding, with deep bass and clear highs. The noise cancellation works incredibly well, especially during my daily commute. Battery life is impressive - I only need to charge them once a week.</p>
+                    </div>
+                    
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">Great, but could be better</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small">By Sarah M. on August 30, 2023</p>
+                        <p>Sound quality is excellent and the battery life is as advertised. However, I find them a bit tight on my head after a few hours of use. The noise cancellation is good but not as powerful as some competitors. Overall good value for the price.</p>
+                    </div>
+                    
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">Perfect for work from home</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small">By Michael T. on August 12, 2023</p>
+                        <p>These headphones have been a game-changer for my work-from-home setup. They block out household noise perfectly, and the microphone quality for calls is exceptional. My colleagues can hear me clearly even with background noise. The comfort level is good enough for all-day wear.</p>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button class="btn btn-outline-secondary">Load More Reviews</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    <section class="my-5">
+        <h3 class="mb-4">You May Also Like</h3>
+        <div class="row">
+            <!-- Product 1 -->
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Wireless Earbuds</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-danger fw-bold">$59.99</span>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <button class="btn btn-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Bluetooth Speaker</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-danger fw-bold">$49.99</span>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <button class="btn btn-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Headphone Stand</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-danger fw-bold">$19.99</span>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <button class="btn btn-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Audio Adapter</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-danger fw-bold">$12.99</span>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <button class="btn btn-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        // Function to change main product image when clicking on thumbnails
+        function changeImage(element) {
+            document.getElementById('main-product-image').src = element.src;
+        }
+        
+        // Quantity controls
+        document.getElementById('increase-quantity').addEventListener('click', function() {
+            let quantityInput = document.getElementById('quantity');
+            let currentValue = parseInt(quantityInput.value);
+            quantityInput.value = currentValue + 1;
+        });
+        
+        document.getElementById('decrease-quantity').addEventListener('click', function() {
+            let quantityInput = document.getElementById('quantity');
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+    </script>
+}
