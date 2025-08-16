@@ -1,0 +1,22 @@
+@page
+@model WebApplication1.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "Cerrar sesión";
+}
+
+<div class="text-center">
+    <h1>Cerrando sesión...</h1>
+    <p>Estás siendo redirigido a la página principal.</p>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Redirect to home page after a brief delay
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 1500);
+    </script>
+}

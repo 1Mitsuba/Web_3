@@ -1,0 +1,43 @@
+@page "{id:int}"
+@model WebApplication1.Pages.Tasks.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Tarea";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Eliminar Tarea</h1>
+    
+    <div class="alert alert-danger mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        ¿Estás seguro de que deseas eliminar esta tarea? Esta acción no se puede deshacer.
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Task.Title</h5>
+            <p class="card-text">@Model.Task.Description</p>
+            
+            @if (Model.Task.DueDate.HasValue)
+            {
+                <p class="text-muted">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    Fecha límite: @Model.Task.DueDate.Value.ToString("dd/MM/yyyy")
+                </p>
+            }
+            
+            <p class="mb-0">
+                <span class="badge @(Model.Task.IsCompleted ? "bg-success" : "bg-warning")">
+                    @(Model.Task.IsCompleted ? "Completada" : "Pendiente")
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Task.Id" />
+        <div class="d-flex justify-content-between">
+            <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </div>
+    </form>
+</div>

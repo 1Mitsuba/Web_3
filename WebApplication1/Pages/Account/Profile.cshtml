@@ -1,0 +1,118 @@
+@page
+@model WebApplication1.Pages.Account.ProfileModel
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Mi Perfil</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <div class="user-avatar mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem;">
+                        @Model.CurrentUser.Username.Substring(0, 1).ToUpper()
+                    </div>
+                    <h5 class="card-title">@Model.CurrentUser.FirstName @Model.CurrentUser.LastName</h5>
+                    <p class="card-text text-muted">@Model.CurrentUser.Username</p>
+                    <p class="card-text text-muted">@Model.CurrentUser.Email</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body task-stats">
+                    <h5 class="card-title">Estadísticas</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Tareas totales:</span>
+                        <span class="badge bg-primary rounded-pill total-tasks">@Model.TotalTasks</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Tareas completadas:</span>
+                        <span class="badge bg-success rounded-pill completed-tasks">@Model.CompletedTasks</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Tareas pendientes:</span>
+                        <span class="badge bg-warning rounded-pill pending-tasks">@Model.PendingTasks</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Editar perfil</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="UserProfile.Id" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="UserProfile.FirstName" class="form-label">Nombre</label>
+                                <input asp-for="UserProfile.FirstName" class="form-control" />
+                                <span asp-validation-for="UserProfile.FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="UserProfile.LastName" class="form-label">Apellido</label>
+                                <input asp-for="UserProfile.LastName" class="form-control" />
+                                <span asp-validation-for="UserProfile.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserProfile.Username" class="form-label">Nombre de usuario</label>
+                            <input asp-for="UserProfile.Username" class="form-control" />
+                            <span asp-validation-for="UserProfile.Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserProfile.Email" class="form-label">Correo electrónico</label>
+                            <input asp-for="UserProfile.Email" class="form-control" />
+                            <span asp-validation-for="UserProfile.Email" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Cambiar contraseña</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="PasswordModel.CurrentPassword" class="form-label">Contraseña actual</label>
+                            <input asp-for="PasswordModel.CurrentPassword" class="form-control" type="password" />
+                            <span asp-validation-for="PasswordModel.CurrentPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PasswordModel.NewPassword" class="form-label">Nueva contraseña</label>
+                            <input asp-for="PasswordModel.NewPassword" class="form-control" type="password" />
+                            <span asp-validation-for="PasswordModel.NewPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PasswordModel.ConfirmPassword" class="form-label">Confirmar nueva contraseña</label>
+                            <input asp-for="PasswordModel.ConfirmPassword" class="form-control" type="password" />
+                            <span asp-validation-for="PasswordModel.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

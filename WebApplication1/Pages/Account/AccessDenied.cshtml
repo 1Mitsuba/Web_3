@@ -1,0 +1,31 @@
+@page
+@model WebApplication1.Pages.Account.AccessDeniedModel
+@{
+    ViewData["Title"] = "Acceso denegado";
+}
+
+<div class="container mt-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle text-danger fa-4x"></i>
+                    </div>
+                    <h1 class="display-5 mb-3">Acceso denegado</h1>
+                    <p class="lead">No tienes permisos para acceder a esta página.</p>
+                    <p class="mb-4">Por favor inicia sesión con una cuenta que tenga los permisos necesarios o regresa a la página principal.</p>
+                    
+                    <div class="d-flex justify-content-center gap-3">
+                        <a asp-page="/Index" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i> Ir al inicio
+                        </a>
+                        <a asp-page="/Account/Login" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i> Iniciar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

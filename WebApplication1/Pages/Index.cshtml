@@ -1,0 +1,54 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Bienvenido a Task Manager</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Gestión de tareas</h2>
+                    <p class="card-text">Esta aplicación le permite gestionar sus tareas diarias de manera eficiente. Puede crear nuevas tareas, marcarlas como completadas, editarlas o eliminarlas.</p>
+                    <p class="card-text">Use la navegación lateral para acceder a las diferentes secciones de la aplicación.</p>
+                    <a asp-page="/Tasks/Index" class="btn btn-primary">Ver mis tareas</a>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Características principales</h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Lista completa de tareas</li>
+                        <li class="list-group-item">Filtrado por estado (completadas, pendientes)</li>
+                        <li class="list-group-item">Gestión de fechas de vencimiento</li>
+                        <li class="list-group-item">Interfaz intuitiva y fácil de usar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body task-stats">
+                    <h3 class="card-title">Resumen</h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Tareas totales:</span>
+                        <span class="badge bg-primary rounded-pill total-tasks">@Model.TotalTasks</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Tareas completadas:</span>
+                        <span class="badge bg-success rounded-pill completed-tasks">@Model.CompletedTasks</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Tareas pendientes:</span>
+                        <span class="badge bg-warning rounded-pill pending-tasks">@Model.PendingTasks</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

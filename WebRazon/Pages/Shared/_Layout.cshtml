@@ -1,371 +1,264 @@
-ï»¿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ShopRazon</title>
+    <title>@ViewData["Title"] - TaskManager</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebRazon.styles.css" asp-append-version="true" />
-    <!-- Add Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Custom e-commerce styling -->
-    <style>
-        :root {
-            --primary-color: #3a86ff;
-            --secondary-color: #ff006e;
-            --dark-color: #293241;
-            --light-color: #f8f9fa;
-            --success-color: #4cb944;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 76px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary-color) !important;
-        }
-        
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .top-bar {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 8px 0;
-            font-size: 0.9rem;
-        }
-        
-        .top-bar a {
-            color: white;
-            text-decoration: none;
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-        }
-        
-        .category-item {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-        }
-        
-        .category-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .category-icon {
-            background-color: #f0f8ff;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 2rem;
-            color: var(--primary-color);
-        }
-        
-        .footer {
-            margin-top: auto;
-            padding: 3rem 0;
-            background-color: var(--dark-color);
-            color: white;
-        }
-        
-        .footer h5 {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 1.2rem;
-        }
-        
-        .footer ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        
-        .footer ul li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            color: #fff;
-        }
-        
-        .social-icons a {
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: rgba(255,255,255,0.1);
-            color: #fff;
-            text-align: center;
-            line-height: 36px;
-            margin-right: 8px;
-            transition: all 0.3s;
-        }
-        
-        .social-icons a:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            background-color: rgba(0,0,0,0.2);
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: #2d75e0;
-            border-color: #2d75e0;
-        }
-        
-        .btn-outline-primary {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-        
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-right: 0.3rem;
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--secondary-color);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .icon-btn {
-            position: relative;
-            padding: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-    <!-- Top Info Bar -->
-    <div class="top-bar d-none d-md-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <span><i class="fas fa-phone-alt me-2"></i> Call us: (123) 456-7890</span>
-                </div>
-                <div class="col-md-6 text-end">
-                    <span class="me-3"><i class="fas fa-truck me-1"></i> Free shipping on orders over $50</span>
-                    <a href="#" class="me-3"><i class="fas fa-map-marker-alt me-1"></i> Store Locator</a>
-                    <a href="#"><i class="fas fa-question-circle me-1"></i> Help</a>
-                </div>
+    <!-- Barra superior de información -->
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-none d-md-block">
+                <span><i class="fas fa-phone-alt me-2"></i> Llámanos: (123) 456-7890</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="me-3 d-none d-md-inline"><i class="fas fa-bell me-1"></i> Notificaciones</span>
+                <a href="#" class="me-3"><i class="fas fa-question-circle me-1"></i> Ayuda</a>
             </div>
         </div>
     </div>
 
-    <!-- Main Navigation -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <i class="fas fa-shopping-bag me-2"></i>ShopRazon
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-lg-flex justify-content-between">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categories
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                                <li><a class="dropdown-item" href="#">Electronics</a></li>
-                                <li><a class="dropdown-item" href="#">Clothing</a></li>
-                                <li><a class="dropdown-item" href="#">Home & Garden</a></li>
-                                <li><a class="dropdown-item" href="#">Sports</a></li>
-                                <li><a class="dropdown-item" href="#">Toys</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">All Categories</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">Deals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">New Arrivals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Search Box -->
-                    <form class="d-flex mx-auto my-2 my-lg-0 col-lg-4">
-                        <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Search products..." aria-label="Search">
-                            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
-                    
-                    <!-- User Controls -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark icon-btn" href="#">
-                                <i class="fas fa-heart"></i>
-                                <span class="cart-count">2</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark icon-btn" href="#">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="cart-count">3</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="#">Sign In</a></li>
-                                <li><a class="dropdown-item" href="#">Register</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">My Account</a></li>
-                                <li><a class="dropdown-item" href="#">My Orders</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+    <!-- Header principal con navegación -->
+    <header class="header-main">
+        <div class="container h-100">
+            <div class="d-flex justify-content-between align-items-center h-100">
+                <div class="d-flex align-items-center">
+                    <!-- Botón de toggle para sidebar (visible en todos los tamaños) -->
+                    <button id="sidebarToggle" class="btn me-2" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <!-- Logo y marca -->
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">
+                        <i class="fas fa-tasks"></i>TaskManager
+                    </a>
+                </div>
+
+                <!-- Botones de autenticación (desktop) -->
+                <div class="d-none d-lg-flex align-items-center">
+                    <a href="#" class="btn auth-btn login-btn">Iniciar Sesión</a>
+                    <a href="#" class="btn auth-btn register-btn">Registrarse</a>
+                </div>
+
+                <!-- Iconos de usuario (visible en todos los tamaños) -->
+                <div class="d-flex align-items-center">
+                    <!-- Icono de notificaciones -->
+                    <a href="#" class="icon-btn me-2 d-lg-none">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">2</span>
+                    </a>
+
+                    <!-- Menú desplegable de usuario -->
+                    <div class="dropdown">
+                        <a class="icon-btn" href="#" role="button" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+        <div class="container">
+            <form class="d-flex">
+                <div class="input-group">
+                    <input class="form-control" type="search" placeholder="Buscar tareas..." aria-label="Buscar">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <!-- Newsletter Subscription -->
-    <section class="bg-light py-5 mt-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
-                    <h3>Subscribe to Our Newsletter</h3>
-                    <p class="text-muted">Stay updated with the latest products, special offers, and discounts.</p>
-                    <div class="input-group mb-3 mt-4">
-                        <input type="email" class="form-control" placeholder="Your email address" aria-label="Email address">
-                        <button class="btn btn-primary" type="button">Subscribe</button>
-                    </div>
-                    <small class="text-muted">By subscribing, you agree to our Privacy Policy.</small>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Barra lateral de navegación -->
+        <aside class="sidebar" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-area="" asp-page="/Index">
+                        <i class="fas fa-home"></i> Inicio
+                    </a>
+                </li>
 
-    <!-- Enhanced Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h5>Shop</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">New Arrivals</a></li>
-                        <li><a href="#">Best Sellers</a></li>
-                        <li><a href="#">Special Offers</a></li>
-                        <li><a href="#">Clearance</a></li>
-                        <li><a href="#">Categories</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h5>Customer Service</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Returns & Refunds</a></li>
-                        <li><a href="#">Delivery Information</a></li>
-                        <li><a href="#">Warranty & Repairs</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h5>About Us</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Corporate Responsibility</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a asp-area="" asp-page="/Privacy">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Connect With Us</h5>
-                    <div class="social-icons mb-4">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                <!-- Sección de tareas -->
+                <li class="sidebar-category-title mt-3">TAREAS</li>
+                <li class="nav-item">
+                    <a class="nav-link sidebar-dropdown-toggle" data-bs-toggle="collapse" href="#tasksSubmenu"
+                        role="button" aria-expanded="false" aria-controls="tasksSubmenu">
+                        <i class="fas fa-clipboard-list"></i> Tareas pendientes
+                    </a>
+                    <div class="collapse sidebar-dropdown-menu" id="tasksSubmenu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Hoy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Esta semana</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Este mes</a>
+                            </li>
+                        </ul>
                     </div>
-                    <h5>Payment Methods</h5>
-                    <div class="payment-methods">
-                        <i class="fab fa-cc-visa fa-2x me-2"></i>
-                        <i class="fab fa-cc-mastercard fa-2x me-2"></i>
-                        <i class="fab fa-cc-amex fa-2x me-2"></i>
-                        <i class="fab fa-cc-paypal fa-2x"></i>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-check-circle"></i> Tareas completadas
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-ban"></i> Tareas canceladas
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-star"></i> Tareas importantes
+                    </a>
+                </li>
+
+                <!-- Sección de soporte -->
+                <li class="sidebar-category-title mt-3">SOPORTE</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-question-circle"></i> Ayuda
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-envelope"></i> Contacto
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-page="/Privacy">
+                        <i class="fas fa-shield-alt"></i> Privacidad
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Contenido principal -->
+        <div class="content" id="content">
+            <main role="main">
+                @RenderBody()
+            </main>
+
+            <!-- Sección de newsletter -->
+            <section class="newsletter-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center">
+                            <h2>Suscríbete a Actualizaciones</h2>
+                            <p class="mb-4">Recibe notificaciones sobre tus tareas y recordatorios importantes.</p>
+
+                            <form>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <input type="email" class="form-control newsletter-input"
+                                                placeholder="Tu correo electrónico">
+                                            <button class="btn newsletter-btn" type="button">Suscribirme</button>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small class="text-muted">
+                                                Al suscribirte, aceptas nuestra
+                                                <a href="#" class="text-decoration-underline">Política de Privacidad</a>.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="row">
+                    <!-- Columna 1 -->
+                    <div class="col-md-4 col-6 mb-4 mb-md-0">
+                        <h5>Gestión de Tareas</h5>
+                        <ul>
+                            <li><a href="#">Tareas Pendientes</a></li>
+                            <li><a href="#">Tareas Completadas</a></li>
+                            <li><a href="#">Tareas Importantes</a></li>
+                            <li><a href="#">Calendario</a></li>
+                            <li><a href="#">Categorías</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 2 -->
+                    <div class="col-md-4 col-6 mb-4 mb-md-0">
+                        <h5>Ayuda</h5>
+                        <ul>
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Tutorial</a></li>
+                            <li><a href="#">Preguntas Frecuentes</a></li>
+                            <li><a href="#">Soporte Técnico</a></li>
+                            <li><a href="#">Contáctanos</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 3 -->
+                    <div class="col-md-4 mt-4 mt-md-0">
+                        <h5>Conéctate con nosotros</h5>
+                        <div class="social-icons mb-3">
+                            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                        <p>Descarga nuestra aplicación móvil:</p>
+                        <div class="d-flex mt-2">
+                            <a href="#" class="me-2"><i class="fab fa-apple fa-2x"></i></a>
+                            <a href="#"><i class="fab fa-android fa-2x"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="copyright text-center">
+
+        <div class="copyright">
             <div class="container">
-                <p class="mb-0">&copy; @DateTime.Now.Year - ShopRazon - All Rights Reserved</p>
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="mb-0">&copy; @DateTime.Now.Year - TaskManager - Todos los derechos reservados
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <a href="#" class="me-3">Términos de Servicio</a>
+                        <a href="#">Política de Privacidad</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
@@ -376,4 +269,5 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

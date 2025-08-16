@@ -3,6 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Register our task service as a singleton
+builder.Services.AddSingleton<WebRazon.Services.TaskService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

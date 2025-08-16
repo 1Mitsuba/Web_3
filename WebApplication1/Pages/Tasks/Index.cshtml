@@ -1,0 +1,122 @@
+@page
+@model WebApplication1.Pages.Tasks.IndexModel
+@{
+    ViewData["Title"] = "Tareas";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Mis Tareas</h1>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nueva Tarea
+        </a>
+    </div>
+    
+    <!-- Filter buttons -->
+    <div class="filter-container mb-4">
+        <button class="filter-button active" data-filter="all">Todas</button>
+        <button class="filter-button" data-filter="pending">Pendientes</button>
+        <button class="filter-button" data-filter="completed">Completadas</button>
+    </div>
+    
+    <!-- Task list -->
+    <div class="task-list">
+        @if (Model.Tasks.Any())
+        {
+            @foreach (var task in Model.Tasks)
+            {
+                <div class="task-item">
+                    <div class="d-flex align-items-center">
+                        <div class="form-check me-3">
+                            <input class="form-check-input task-checkbox" 
+                                   type="checkbox" 
+                                   id="task-@task.Id" 
+                                   data-task-id="@task.Id" 
+                                   @(task.IsCompleted ? "checked" : "")>
+                        </div>
+                        <div>
+                            <div class="task-title @(task.IsCompleted ? "task-completed" : "")">@task.Title</div>
+                            <div class="task-description @(task.IsCompleted ? "task-completed" : "")">@task.Description</div>
+                            @if (task.DueDate.HasValue)
+                            {
+                                <div class="task-date">
+                                    <i class="fas fa-calendar-alt"></i> 
+                                    Fecha límite: @task.DueDate.Value.ToString("dd/MM/yyyy")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <a asp-page="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-outline-primary me-1">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@task.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center p-5">
+                <i class="fas fa-tasks fa-3x mb-3 text-muted"></i>
+                <p class="text-muted">No hay tareas disponibles. ¡Comienza a crear una!</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Setup AJAX for antiforgery token
+            var antiforgeryToken = $('input:hidden[name="__RequestVerificationToken"]').val();
+            
+            // Update task status via AJAX
+            $('.task-checkbox').change(function() {
+                var taskId = $(this).data('task-id');
+                var isCompleted = $(this).is(':checked');
+                
+                // Update UI
+                var taskItem = $(this).closest('.task-item');
+                var taskTitle = taskItem.find('.task-title');
+                var taskDescription = taskItem.find('.task-description');
+                
+                if (isCompleted) {
+                    taskTitle.addClass('task-completed');
+                    taskDescription.addClass('task-completed');
+                } else {
+                    taskTitle.removeClass('task-completed');
+                    taskDescription.removeClass('task-completed');
+                }
+                
+                // Call API to update status
+                $.ajax({
+                    url: '/Tasks?handler=ToggleStatus',
+                    type: 'POST',
+                    data: { id: taskId },
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(data) {
+                        console.log('Status updated:', data);
+                        // Refresh task statistics if they exist on the page
+                        refreshTaskStatistics();
+                    },
+                    error: function(error) {
+                        console.error('Error updating task status:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    @{
+        // Include the antiforgery token (automatically added by ASP.NET Core)
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <form method="post" id="antiforgeryForm">
+        @Html.AntiForgeryToken()
+    </form>
+}
