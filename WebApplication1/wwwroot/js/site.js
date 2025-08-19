@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = document.body;
     const sidebar = document.querySelector('.sidebar');
     const toggleBtn = document.querySelector('.toggle-sidebar-btn');
+    const footer = document.querySelector('.footer');
     
     // Check if sidebar state is saved in localStorage
     const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
@@ -41,6 +42,47 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.add('sidebar-collapsed');
             localStorage.setItem('sidebarCollapsed', 'true');
         });
+    }
+    
+    // Check if footer is in viewport and adjust sidebar accordingly
+    function checkFooterVisibility() {
+        if (footer && sidebar) {
+            const footerRect = footer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Log for debugging
+            console.log('Footer top position:', footerRect.top);
+            console.log('Window height:', windowHeight);
+            
+            // If footer is visible in the viewport
+            if (footerRect.top < windowHeight) {
+                console.log('Footer is visible');
+                body.classList.add('has-footer-visible');
+            } else {
+                console.log('Footer is not visible');
+                body.classList.remove('has-footer-visible');
+            }
+            
+            // Force the sidebar to extend to the bottom of the page
+            if (footerRect.top > windowHeight) {
+                sidebar.style.height = `calc(100vh - var(--header-height))`;
+            } else {
+                sidebar.style.height = `calc(100vh - var(--header-height) - var(--footer-height))`;
+            }
+        }
+    }
+    
+    // Check footer visibility on load, scroll and resize
+    if (footer && sidebar) {
+        // Run initially
+        setTimeout(checkFooterVisibility, 100);
+        
+        // Add event listeners
+        window.addEventListener('scroll', checkFooterVisibility);
+        window.addEventListener('resize', checkFooterVisibility);
+        
+        // Run again after a slight delay to ensure all elements are fully loaded
+        setTimeout(checkFooterVisibility, 500);
     }
     
     // Task filtering

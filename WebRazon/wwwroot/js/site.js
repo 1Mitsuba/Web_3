@@ -79,14 +79,35 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Inicializar tooltips de Bootstrap
-    var tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltips.map(function(tooltip) {
-        return new bootstrap.Tooltip(tooltip);
-    });
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    if (typeof bootstrap !== 'undefined') {
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    }
     
     // Inicializar dropdowns de Bootstrap
-    var dropdowns = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
-    dropdowns.map(function(dropdown) {
-        return new bootstrap.Dropdown(dropdown);
-    });
+    var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
+    if (typeof bootstrap !== 'undefined') {
+        var dropdownList = dropdownTriggerList.map(function (dropdownTriggerEl) {
+            return new bootstrap.Dropdown(dropdownTriggerEl)
+        });
+    }
+    
+    // Inicializar collapses de Bootstrap para el sidebar
+    var collapseTriggerList = [].slice.call(document.querySelectorAll('.sidebar-dropdown-toggle'))
+    if (typeof bootstrap !== 'undefined') {
+        collapseTriggerList.forEach(function (collapseTriggerEl) {
+            collapseTriggerEl.addEventListener('click', function(e) {
+                e.preventDefault();
+                var targetId = this.getAttribute('href');
+                var targetCollapse = document.querySelector(targetId);
+                if (targetCollapse && typeof bootstrap.Collapse !== 'undefined') {
+                    new bootstrap.Collapse(targetCollapse, {
+                        toggle: true
+                    });
+                }
+            });
+        });
+    }
 });

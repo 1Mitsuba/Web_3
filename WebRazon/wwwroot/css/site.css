@@ -32,6 +32,7 @@ body {
   --sidebar-width: 250px;
   --footer-height: auto;
   --box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  --footer-color: #b7b0d9; /* Color morado pastel para el footer */
 }
 
 /* Focus styles */
@@ -367,42 +368,26 @@ body {
   border-color: #8dbce0;
 }
 
-/* Footer */
-.footer {
-  background-color: var(--dark-color);
+/* Footer simplificado */
+.simple-footer {
+  background-color: var(--footer-color);
   color: white;
-  margin-top: auto; /* Empuja el footer al fondo */
+  margin-top: auto;
   width: 100%;
+  padding: 15px 0;
+  text-align: center;
 }
 
-.footer-main {
-  padding: 3rem 0;
+.simple-footer p {
+  margin-bottom: 0;
 }
 
-.footer h5 {
+.simple-footer a {
   color: white;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-}
-
-.footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer ul li {
-  margin-bottom: 0.8rem;
-}
-
-.footer a {
-  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
-.footer a:hover {
-  color: white;
+.simple-footer a:hover {
   text-decoration: underline;
 }
 
@@ -429,12 +414,6 @@ body {
 .social-icons a:hover {
   background-color: var(--primary-color);
   transform: translateY(-3px);
-}
-
-/* Copyright */
-.copyright {
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 1.2rem 0;
 }
 
 /* Toggle de barra lateral */
@@ -493,10 +472,6 @@ body {
   .top-bar {
     height: auto;
     padding: 5px 0;
-  }
-  
-  .footer h5 {
-    margin-top: 1.5rem;
   }
   
   .table {
