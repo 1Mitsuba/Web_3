@@ -1,0 +1,258 @@
+@page
+@model Web2Oficial.Pages.CanceladaModel
+@{
+    ViewData["Title"] = "Tareas Canceladas";
+}
+
+<div class="content-container">
+    <h2 class="mb-4">Motivos de Cancelación</h2>
+    
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body p-3">
+                    <div style="max-width: 500px; height: 300px; margin: 0 auto;">
+                        <canvas id="cancelacionesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h5 class="mt-4 mb-3">Registro de Cancelaciones</h5>
+
+    @if (Model.TareasCanceladas.Count == 0)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body p-4 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-x-circle text-danger" style="font-size: 3rem;"></i>
+                    <h3 class="mt-3">No hay tareas canceladas</h3>
+                    <p class="text-muted">No has cancelado ninguna tarea aún.</p>
+                </div>
+                <a href="~/Index" class="btn btn-primary">
+                    <i class="bi bi-arrow-left me-2"></i> Volver a tareas
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+            <div class="items-per-page d-flex align-items-center">
+                <label for="pageSizeSelector" class="me-2">Mostrar:</label>
+                <select id="pageSizeSelector" class="form-select form-select-sm rounded-pill">
+                    @if (Model.TamanoPagina == 5)
+                    {
+                        <option value="5" selected>5</option>
+                    }
+                    else
+                    {
+                        <option value="5">5</option>
+                    }
+                    
+                    @if (Model.TamanoPagina == 10)
+                    {
+                        <option value="10" selected>10</option>
+                    }
+                    else
+                    {
+                        <option value="10">10</option>
+                    }
+                    
+                    @if (Model.TamanoPagina == 15)
+                    {
+                        <option value="15" selected>15</option>
+                    }
+                    else
+                    {
+                        <option value="15">15</option>
+                    }
+                    
+                    @if (Model.TamanoPagina == 25)
+                    {
+                        <option value="25" selected>25</option>
+                    }
+                    else
+                    {
+                        <option value="25">25</option>
+                    }
+                    
+                    @if (Model.TamanoPagina == 50)
+                    {
+                        <option value="50" selected>50</option>
+                    }
+                    else
+                    {
+                        <option value="50">50</option>
+                    }
+                </select>
+                <span class="ms-2">tareas por página</span>
+            </div>
+
+            <div>
+                <span class="text-muted">
+                    Mostrando @((Model.PaginaActual - 1) * Model.TamanoPagina + 1) - @Math.Min(Model.PaginaActual * Model.TamanoPagina, Model.TotalTareasCanceladas) de @Model.TotalTareasCanceladas tareas
+                </span>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover border">
+                <thead>
+                    <tr>
+                        <th>Nombre Tarea</th>
+                        <th>Fecha Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tarea in Model.TareasCanceladas)
+                    {
+                        <tr>
+                            <td>@tarea.nombreTarea</td>
+                            <td>@tarea.fechaVencimiento</td>
+                            <td>
+                                <span class="badge bg-danger">@tarea.estado</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action" data-bs-toggle="tooltip" title="Ver detalles">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn-action" data-bs-toggle="tooltip" title="Restaurar">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        @if (Model.TotalPaginas > 0)
+        {
+            <div class="d-flex justify-content-center mt-4">
+                <nav>
+                    <ul class="pagination justify-content-center mb-0">
+                        @if (Model.PaginaActual > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-page="./Cancelada" asp-route-pagina="@(Model.PaginaActual - 1)" asp-route-tamanoPagina="@Model.TamanoPagina">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                        }
+                        
+                        @{
+                            // Mostrar todas las páginas si hay menos de 7
+                            int startPage = 1;
+                            int endPage = Model.TotalPaginas;
+                            
+                            // Si hay más de 7 páginas, calcular el rango a mostrar
+                            if (Model.TotalPaginas > 7)
+                            {
+                                if (Model.PaginaActual <= 4)
+                                {
+                                    // Estamos cerca del inicio, mostrar páginas 1-7
+                                    startPage = 1;
+                                    endPage = 7;
+                                }
+                                else if (Model.PaginaActual > Model.TotalPaginas - 4)
+                                {
+                                    // Estamos cerca del final
+                                    startPage = Model.TotalPaginas - 6;
+                                    endPage = Model.TotalPaginas;
+                                }
+                                else
+                                {
+                                    // Estamos en medio
+                                    startPage = Model.PaginaActual - 3;
+                                    endPage = Model.PaginaActual + 3;
+                                }
+                            }
+                        }
+                        
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                <a class="page-link" asp-page="./Cancelada" asp-route-pagina="@i" asp-route-tamanoPagina="@Model.TamanoPagina">@i</a>
+                            </li>
+                        }
+                        
+                        @if (Model.PaginaActual < Model.TotalPaginas)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-page="./Cancelada" asp-route-pagina="@(Model.PaginaActual + 1)" asp-route-tamanoPagina="@Model.TamanoPagina">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            if (typeof bootstrap !== 'undefined') {
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+            
+            // Manejar el cambio en el selector de tamaño de página
+            const pageSizeSelector = document.getElementById('pageSizeSelector');
+            if (pageSizeSelector) {
+                pageSizeSelector.addEventListener('change', function() {
+                    window.location.href = '?pagina=1&tamanoPagina=' + this.value;
+                });
+            }
+            
+            // Gráfico de motivos de cancelación con tamaño ajustado
+            const ctx = document.getElementById('cancelacionesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Reprogramada', 'No necesaria', 'Falta de tiempo', 'Otros'],
+                    datasets: [{
+                        data: [40, 25, 20, 15],
+                        backgroundColor: [
+                            '#8a97e0', // Morado pastel
+                            '#6478d3', // Azul-morado
+                            '#a5b4fc', // Lavanda claro
+                            '#4b6cb7'  // Azul medio
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

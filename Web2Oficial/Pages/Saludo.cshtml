@@ -1,0 +1,186 @@
+@page
+@model Web2Oficial.Pages.SaludoModel
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<h2>Perfil de Usuario</h2>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="avatar-circle mx-auto mb-3">
+                    <span class="avatar-text">JD</span>
+                </div>
+                <h3 class="mb-1">Juan Doe</h3>
+                <p class="text-muted mb-3">Administrador</p>
+                
+                <div class="d-grid gap-2 mb-3">
+                    <button class="btn btn-outline-primary">
+                        <i class="bi bi-pencil-fill me-2"></i>Editar Perfil
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-image me-2"></i>Cambiar Foto
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Información de Contacto</h5>
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-envelope-fill me-3 text-muted"></i> 
+                        <span>juan.doe@example.com</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-telephone-fill me-3 text-muted"></i> 
+                        <span>+1 234 567 890</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill me-3 text-muted"></i> 
+                        <span>Ciudad, País</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Estadísticas de Tareas</h5>
+            </div>
+            <div class="card-body pb-0">
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <h2 class="text-primary mb-0">12</h2>
+                        <p class="text-muted mb-0">Tareas Completadas</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="text-warning mb-0">5</h2>
+                        <p class="text-muted mb-0">Tareas Pendientes</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="text-danger mb-0">3</h2>
+                        <p class="text-muted mb-0">Tareas Canceladas</p>
+                    </div>
+                </div>
+                <div style="height: 200px; margin-bottom: 10px;">
+                    <canvas id="tareasChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Actividad Reciente</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item p-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Completada: Informe mensual</h6>
+                            <small class="text-muted">3 días atrás</small>
+                        </div>
+                        <small class="text-muted">Has finalizado la tarea "Informe mensual"</small>
+                    </div>
+                    <div class="list-group-item p-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Creada: Reunión con clientes</h6>
+                            <small class="text-muted">5 días atrás</small>
+                        </div>
+                        <small class="text-muted">Has creado una nueva tarea "Reunión con clientes"</small>
+                    </div>
+                    <div class="list-group-item p-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Cancelada: Revisión de documentos</h6>
+                            <small class="text-muted">1 semana atrás</small>
+                        </div>
+                        <small class="text-muted">Has cancelado la tarea "Revisión de documentos"</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background-color: var(--header-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .avatar-text {
+        font-size: 42px;
+        font-weight: 600;
+    }
+    
+    .btn-outline-primary, .btn-outline-secondary {
+        border-width: 1px;
+        padding: 8px;
+        font-size: 14px;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico de actividad de tareas con tamaño reducido
+            const ctx = document.getElementById('tareasChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+                    datasets: [{
+                        label: 'Tareas Completadas',
+                        data: [5, 8, 6, 9, 12, 10],
+                        borderColor: '#7c92ff',
+                        backgroundColor: 'rgba(124, 146, 255, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#7c92ff',
+                        pointRadius: 4,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

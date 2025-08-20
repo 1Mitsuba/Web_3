@@ -1,0 +1,406 @@
+/* Colores específicos para tareas */
+:root {
+  /* Nueva paleta de morados pastel */
+  --primary-color: #a78bfa;        /* Morado claro pastel */
+  --secondary-color: #8b5cf6;      /* Violeta medio */
+  --accent-color: #6d28d9;         /* Violeta profundo */
+  --light-purple: #c4b5fd;         /* Lavanda claro */
+  --ultra-light-purple: #e9d5ff;   /* Lila muy claro */
+  --dark-purple: #5b21b6;          /* Morado oscuro */
+  --vivid-purple: #7c3aed;         /* Violeta vibrante */
+  
+  /* Estados de tareas con tonos morados más contrastados */
+  --pendiente-bg: #ddd6fe;         /* Lavanda más claro para pendiente */
+  --pendiente-text: #4c1d95;       /* Texto violeta oscuro */
+  --en-curso-bg: #8b5cf6;          /* Violeta medio para en curso */
+  --en-curso-text: #ffffff;        /* Texto blanco */
+  --finalizado-bg: #6d28d9;        /* Violeta profundo para finalizado */
+  --finalizado-text: #ffffff;      /* Texto blanco */
+  --cancelado-bg: #4c1d95;         /* Violeta muy oscuro para cancelado */
+  --cancelado-text: #ffffff;       /* Texto blanco */
+  
+  /* Colores para estadísticas */
+  --stats-completed: #8b5cf6;      /* Violeta medio */
+  --stats-pending: #ddd6fe;        /* Lavanda más claro */
+  --stats-cancelled: #4c1d95;      /* Violeta muy oscuro */
+}
+
+/* Contenedor de contenido */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Títulos */
+.tareas-title {
+  color: var(--dark-purple);
+  font-weight: 600;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  border-bottom: 3px solid var(--vivid-purple);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+/* Tabla de tareas */
+.table {
+  margin-bottom: 0;
+  background-color: white;
+}
+
+.table thead th {
+  border-bottom: 1px solid #e9d5ff;
+  background-color: #f5f3ff;
+  color: var(--dark-purple);
+  font-weight: 600;
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  padding: 15px;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(233, 213, 255, 0.1);
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Badges para estados - colores más distintivos */
+.badge {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 30px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.badge.bg-warning {
+  background-color: var(--pendiente-bg) !important;
+  color: var(--pendiente-text) !important;
+  border: 1px solid #c4b5fd;
+}
+
+.badge.bg-info {
+  background-color: var(--en-curso-bg) !important;
+  color: var(--en-curso-text) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--finalizado-bg) !important;
+  color: var(--finalizado-text) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--cancelado-bg) !important;
+  color: var(--cancelado-text) !important;
+}
+
+/* Botones de acción - colores más distintivos */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e9d5ff;
+  border-radius: 4px;
+  background-color: white;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botones de acción con colores específicos */
+.btn-action.btn-view {
+  color: var(--vivid-purple);
+  border-color: var(--vivid-purple);
+}
+
+.btn-action.btn-complete {
+  color: var(--dark-purple);
+  border-color: var(--dark-purple);
+}
+
+.btn-action.btn-cancel {
+  color: #4c1d95;
+  border-color: #4c1d95;
+}
+
+.btn-action.btn-edit {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-action:hover {
+  background-color: #f5f3ff;
+  color: var(--vivid-purple);
+  border-color: var(--vivid-purple);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.15);
+}
+
+/* Selector de tamaño de página - mejor contraste */
+.items-per-page {
+  background-color: #ede9fe;
+  padding: 8px 16px;
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.15);
+  border: 1px solid #c4b5fd;
+}
+
+.items-per-page label {
+  font-weight: 600;
+  color: var(--dark-purple);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* Estilizar el selector desplegable */
+.form-select-sm {
+  padding: 0.25rem 1.5rem 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  border-color: var(--light-purple);
+  max-width: 70px;
+  display: inline-block;
+  background-color: white;
+  color: var(--dark-purple);
+  font-weight: 500;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%237c3aed' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 16px 12px;
+}
+
+/* Opciones del selector - eliminar color plomo */
+select.form-select-sm option {
+  background-color: #f5f3ff !important;
+  color: var(--dark-purple) !important;
+  padding: 10px !important;
+  font-weight: 500 !important;
+}
+
+/* Opción seleccionada */
+select.form-select-sm option:checked {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+  box-shadow: 0 0 10px 100px var(--secondary-color) inset !important;
+}
+
+/* Opciones al pasar el ratón */
+select.form-select-sm option:hover,
+select.form-select-sm option:focus {
+  background-color: var(--ultra-light-purple) !important;
+  color: var(--dark-purple) !important;
+  box-shadow: 0 0 10px 100px var(--ultra-light-purple) inset !important;
+}
+
+/* Efecto al seleccionar una opción */
+select.form-select-sm:focus {
+  border-color: var(--vivid-purple);
+  box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+}
+
+.items-per-page span {
+  color: var(--dark-purple);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Paginación */
+.pagination {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.pagination .page-item .page-link {
+  border-radius: 4px;
+  margin: 0 2px;
+  color: var(--accent-color);
+  border: 1px solid #e9d5ff;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.pagination .page-item .page-link i {
+  font-size: 18px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--vivid-purple);
+  border-color: var(--vivid-purple);
+  color: white;
+  box-shadow: 0 2px 5px rgba(139, 92, 246, 0.2);
+  z-index: 3;
+}
+
+.pagination .page-item .page-link:hover:not(.active) {
+  background-color: #f5f3ff;
+  color: var(--vivid-purple);
+  border-color: var(--light-purple);
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: none;
+}
+
+/* Campo de búsqueda */
+.input-group .form-control {
+  border-right: none;
+  border-color: #e9d5ff;
+}
+
+.input-group .btn {
+  border-left: none;
+  background-color: white;
+  border-color: #e9d5ff;
+  color: var(--accent-color);
+}
+
+.input-group .form-control:focus + .btn {
+  border-color: var(--vivid-purple);
+}
+
+/* Estilos para la página de perfil */
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  background-color: var(--vivid-purple);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+}
+
+.avatar-text {
+  font-size: 42px;
+  font-weight: 600;
+}
+
+/* Colores de estadísticas de perfil */
+.text-primary {
+  color: var(--vivid-purple) !important;
+}
+
+.text-warning {
+  color: var(--light-purple) !important;
+}
+
+.text-danger {
+  color: var(--dark-purple) !important;
+}
+
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  border-color: #e9d5ff;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item h6 {
+  font-weight: 600;
+  color: var(--dark-purple);
+}
+
+/* Media queries */
+@media (max-width: 767px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .pagination {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .badge {
+    min-width: auto;
+  }
+  
+  .items-per-page {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Estilo personalizado para el desplegable */
+.select-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.select-dropdown select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+/* Estilizar el panel desplegable para navegadores webkit */
+select.form-select-sm::-webkit-listbox {
+  background-color: #f5f3ff;
+  border: 1px solid var(--light-purple);
+  border-radius: 8px;
+  padding: 5px;
+}
+
+select.form-select-sm::-webkit-listbox-button {
+  display: none;
+}
+
+/* Personalizar el desplegable para Firefox */
+select.form-select-sm {
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+}
+
+/* Clases adicionales para controlar hover en opciones con JavaScript */
+.select-option-hover {
+  background-color: var(--ultra-light-purple) !important;
+  color: var(--dark-purple) !important;
+}
+
+.select-option-selected {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+}

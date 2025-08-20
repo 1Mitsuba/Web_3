@@ -1,0 +1,106 @@
+/* Estilos personalizados para selects con tema morado */
+
+/* Colores */
+:root {
+  --select-bg: #f5f3ff;
+  --select-border: #c4b5fd;
+  --select-text: #5b21b6;
+  --select-hover-bg: #ddd6fe;
+  --select-hover-text: #4c1d95;
+  --select-selected-bg: #8b5cf6;
+  --select-selected-text: #ffffff;
+  --select-shadow: rgba(139, 92, 246, 0.25);
+}
+
+/* Contenedor personalizado */
+.select-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilizado base del select */
+.custom-select {
+  background-color: white;
+  border: 1px solid var(--select-border);
+  border-radius: 20px;
+  color: var(--select-text);
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0.25rem 1.5rem 0.25rem 0.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238b5cf6' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 12px;
+}
+
+/* Estilo de enfoque */
+.custom-select:focus {
+  border-color: var(--select-selected-bg);
+  box-shadow: 0 0 0 0.25rem var(--select-shadow);
+  outline: none;
+}
+
+/* Opciones personalizadas */
+.custom-select option {
+  background-color: var(--select-bg);
+  color: var(--select-text);
+  padding: 10px;
+  font-weight: 500;
+}
+
+/* Opción seleccionada */
+.custom-select option:checked {
+  background-color: var(--select-selected-bg);
+  color: var(--select-selected-text);
+}
+
+/* Opción al pasar el mouse */
+.custom-select option:hover {
+  background-color: var(--select-hover-bg);
+  color: var(--select-hover-text);
+}
+
+/* Estilos específicos para cada navegador */
+
+/* Chrome/Safari */
+.custom-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-select::-webkit-scrollbar-thumb {
+  background-color: var(--select-selected-bg);
+  border-radius: 4px;
+}
+
+.custom-select::-webkit-scrollbar-track {
+  background-color: var(--select-bg);
+}
+
+/* Firefox */
+.custom-select {
+  scrollbar-width: thin;
+  scrollbar-color: var(--select-selected-bg) var(--select-bg);
+}
+
+/* IE/Edge */
+.custom-select::-ms-expand {
+  display: none;
+}
+
+/* Estilo para el área desplegada */
+.custom-select option {
+  margin: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+/* Estilo específico para opciones de tamaño de página */
+.purple-option {
+  background-color: var(--select-bg) !important;
+  color: var(--select-text) !important;
+  padding: 8px !important;
+  border-radius: 4px !important;
+}
