@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
 using WebRazon.Models;
 using WebRazon.Services;
 
@@ -12,18 +13,39 @@ namespace WebRazon.Pages
 
         [BindProperty]
         public TaskItem Task { get; set; } = new TaskItem();
+        
+        [BindProperty(SupportsGet = true)]
+        public string ReturnPage { get; set; } = "/Index";
+        
+        public List<string> SuggestedTaskNames { get; set; } = new List<string>();
 
         public TaskDetailModel(TaskService taskService, ILogger<TaskDetailModel> logger)
         {
             _taskService = taskService;
             _logger = logger;
+            
+            // Inicializar sugerencias comunes
+            SuggestedTaskNames = new List<string>
+            {
+                "Reunión de equipo",
+                "Revisión de código",
+                "Actualizar documentación",
+                "Preparar presentación",
+                "Llamar al cliente",
+                "Enviar correo electrónico",
+                "Crear informe mensual",
+                "Revisar presupuesto",
+                "Planificar sprint"
+            };
         }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(int? id, string returnPage = "/Index")
         {
-            if (id > 0)
+            ReturnPage = returnPage;
+            
+            if (id.HasValue && id.Value > 0)
             {
-                var task = _taskService.GetTaskById(id);
+                var task = _taskService.GetTaskById(id.Value);
                 
                 if (task == null)
                 {
@@ -54,7 +76,26 @@ namespace WebRazon.Pages
                 _logger.LogInformation("Tarea creada: {TaskName}", Task.Nombre);
             }
 
-            return RedirectToPage("Index");
+            return RedirectToPage(ReturnPage);
+        }
+        
+        [HttpGet]
+        public JsonResult OnGetSuggestions(string term)
+        {
+            // Filtrar sugerencias basadas en el término de búsqueda
+            var filteredSuggestions = SuggestedTaskNames
+                .Where(s => s.Contains(term, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+                
+            // Agregar nombres de tareas existentes como sugerencias
+            var existingTaskNames = _taskService.GetAllTasks()
+                .Where(t => t.Nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
+                .Select(t => t.Nombre)
+                .Distinct()
+                .ToList();
+                
+            // Combinar y eliminar duplicados
+            return new JsonResult(filteredSuggestions.Union(existingTaskNames).Take(10).ToList());
         }
     }
 }

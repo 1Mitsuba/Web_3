@@ -1,4 +1,4 @@
-@page "{id:int}"
+@page "{id:int?}"
 @model TaskDetailModel
 @{
     ViewData["Title"] = "Detalles de Tarea";
@@ -13,10 +13,12 @@
             <div class="card-body">
                 <form method="post">
                     <input type="hidden" asp-for="Task.Id" />
+                    <input type="hidden" asp-for="Task.FechaCreacion" />
+                    <input type="hidden" asp-for="ReturnPage" />
 
                     <div class="mb-3">
                         <label asp-for="Task.Nombre" class="form-label">Nombre de la tarea</label>
-                        <input asp-for="Task.Nombre" class="form-control" required />
+                        <input asp-for="Task.Nombre" class="form-control" id="taskNameAutocomplete" required />
                         <span asp-validation-for="Task.Nombre" class="text-danger"></span>
                     </div>
 
@@ -54,12 +56,50 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-                        <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+                        <a asp-page="@Model.ReturnPage" class="btn btn-secondary">Cancelar</a>
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </div>
                 </form>
             </div>
         </div>
+        
+        @if (Model.Task?.Id > 0)
+        {
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Información Adicional</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">@Model.Task.Id</dd>
+                        
+                        <dt class="col-sm-4">Fecha de creación</dt>
+                        <dd class="col-sm-8">@Model.Task.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
+                        
+                        <dt class="col-sm-4">Estado actual</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Task.EstaCompletada)
+                            {
+                                <span class="badge bg-success">Completada</span>
+                            }
+                            else if (Model.Task.EstaCancelada)
+                            {
+                                <span class="badge bg-danger">Cancelada</span>
+                            }
+                            else if (Model.Task.FechaVencimiento.HasValue && Model.Task.FechaVencimiento.Value < DateTime.Today)
+                            {
+                                <span class="badge bg-warning">Vencida</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">Activa</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -77,6 +117,41 @@
             if (this.checked) {
                 document.getElementById('taskCompleted').checked = false;
             }
+        });
+        
+        // Configuración del autocompletado para nombres de tareas comunes
+        $(function() {
+            var commonTaskNames = [
+                "Reunión de equipo",
+                "Revisión de código",
+                "Actualizar documentación",
+                "Preparar presentación",
+                "Llamar al cliente",
+                "Enviar correo electrónico",
+                "Crear informe mensual",
+                "Revisar presupuesto",
+                "Planificar sprint",
+                "Investigar nuevas tecnologías",
+                "Actualizar sitio web",
+                "Entrevista con candidato",
+                "Mantenimiento de base de datos",
+                "Backup de sistemas",
+                "Configurar entorno de desarrollo",
+                "Implementar nueva característica",
+                "Corrección de bugs",
+                "Pruebas de calidad",
+                "Optimizar rendimiento"
+            ];
+            
+            $("#taskNameAutocomplete").autocomplete({
+                source: commonTaskNames,
+                minLength: 2,
+                delay: 300,
+                autoFocus: true,
+                classes: {
+                    "ui-autocomplete": "custom-autocomplete"
+                }
+            });
         });
     </script>
 }

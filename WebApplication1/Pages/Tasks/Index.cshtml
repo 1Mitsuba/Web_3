@@ -1,70 +1,494 @@
 @page
 @model WebApplication1.Pages.Tasks.IndexModel
+@using WebApplication1.Models
 @{
-    ViewData["Title"] = "Tareas";
+    ViewData["Title"] = "Tareas Asignadas";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Mis Tareas</h1>
-        <a asp-page="Create" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Nueva Tarea
-        </a>
+<h1 class="page-title">Tareas Asignadas</h1>
+
+<!-- Navegación entre tipos de tareas -->
+<div class="mb-4">
+    <div class="btn-group">
+        <a asp-page="Index" class="btn btn-primary active">Tareas Asignadas</a>
+        <a asp-page="Completed" class="btn btn-outline-primary">Tareas Finalizadas</a>
+        <a asp-page="Cancelled" class="btn btn-outline-primary">Tareas Canceladas</a>
     </div>
-    
-    <!-- Filter buttons -->
-    <div class="filter-container mb-4">
-        <button class="filter-button active" data-filter="all">Todas</button>
-        <button class="filter-button" data-filter="pending">Pendientes</button>
-        <button class="filter-button" data-filter="completed">Completadas</button>
-    </div>
-    
-    <!-- Task list -->
-    <div class="task-list">
-        @if (Model.Tasks.Any())
-        {
-            @foreach (var task in Model.Tasks)
-            {
-                <div class="task-item">
-                    <div class="d-flex align-items-center">
-                        <div class="form-check me-3">
-                            <input class="form-check-input task-checkbox" 
-                                   type="checkbox" 
-                                   id="task-@task.Id" 
-                                   data-task-id="@task.Id" 
-                                   @(task.IsCompleted ? "checked" : "")>
-                        </div>
-                        <div>
-                            <div class="task-title @(task.IsCompleted ? "task-completed" : "")">@task.Title</div>
-                            <div class="task-description @(task.IsCompleted ? "task-completed" : "")">@task.Description</div>
-                            @if (task.DueDate.HasValue)
-                            {
-                                <div class="task-date">
-                                    <i class="fas fa-calendar-alt"></i> 
-                                    Fecha límite: @task.DueDate.Value.ToString("dd/MM/yyyy")
-                                </div>
-                            }
-                        </div>
+</div>
+
+<!-- Estadísticas de tareas -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-white shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-tasks fa-2x text-primary"></i>
                     </div>
-                    <div class="task-actions">
-                        <a asp-page="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-outline-primary me-1">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a asp-page="Delete" asp-route-id="@task.Id" class="btn btn-sm btn-outline-danger">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                    <div>
+                        <h6 class="mb-0">Total de tareas</h6>
+                        <h4 class="mb-0">@Model.TaskStats["pending"]</h4>
                     </div>
                 </div>
-            }
-        }
-        else
-        {
-            <div class="text-center p-5">
-                <i class="fas fa-tasks fa-3x mb-3 text-muted"></i>
-                <p class="text-muted">No hay tareas disponibles. ¡Comienza a crear una!</p>
             </div>
-        }
+        </div>
     </div>
+    <div class="col-md-3">
+        <div class="card bg-white shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-exclamation-circle fa-2x text-danger"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Tareas urgentes</h6>
+                        <h4 class="mb-0">@Model.TaskStats["urgent"]</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-white shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-calendar-day fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Para hoy</h6>
+                        <h4 class="mb-0">@Model.TaskStats["dueToday"]</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-white shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-clock fa-2x text-warning"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Atrasadas</h6>
+                        <h4 class="mb-0">@Model.TaskStats["overdue"]</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.UrgentTasks.Any())
+{
+    <div class="alert alert-warning mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+            <div>
+                <h5 class="mb-1">Tienes @Model.UrgentTasks.Count tareas urgentes pendientes</h5>
+                <p class="mb-0">Estas tareas requieren tu atención inmediata.</p>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Pestañas para filtrar tareas -->
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link active" id="all-tab" data-bs-toggle="tab" href="#all">Todas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="today-tab" data-bs-toggle="tab" href="#today">Hoy <span class="badge bg-primary">@Model.DueTodayTasks.Count</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="soon-tab" data-bs-toggle="tab" href="#soon">Próximamente <span class="badge bg-info">@Model.DueSoonTasks.Count</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="overdue-tab" data-bs-toggle="tab" href="#overdue">Atrasadas <span class="badge bg-danger">@Model.OverdueTasks.Count</span></a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <!-- Todas las tareas -->
+    <div class="tab-pane fade show active" id="all">
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Nombre Tarea</th>
+                            <th style="width: 20%">Fecha Vencimiento</th>
+                            <th style="width: 20%">Estado</th>
+                            <th style="width: 20%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Tasks.Any(t => t.Status == TodoTaskStatus.Pending))
+                        {
+                            @foreach (var task in Model.Tasks.Where(t => t.Status == TodoTaskStatus.Pending))
+                            {
+                                <tr class="@(task.IsUrgent ? "task-urgent" : "")">
+                                    <td>
+                                        <div class="task-title">
+                                            @if (task.IsUrgent)
+                                            {
+                                                <span class="text-danger me-1"><i class="fas fa-exclamation-circle"></i></span>
+                                            }
+                                            @task.Title
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(task.Description))
+                                        {
+                                            <div class="small text-muted">@task.Description</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (task.DueDate.HasValue)
+                                        {
+                                            var isOverdue = task.DueDate.Value.Date < DateTime.Today;
+                                            var isToday = task.DueDate.Value.Date == DateTime.Today;
+                                            
+                                            <span class="text-nowrap @(isOverdue ? "text-danger" : isToday ? "text-primary" : "")">
+                                                <i class="fas fa-calendar-alt me-1"></i>
+                                                @task.DueDate.Value.ToString("dd/MM/yyyy")
+                                                @if (isOverdue)
+                                                {
+                                                    <span class="status-badge overdue">Atrasada</span>
+                                                }
+                                                else if (isToday)
+                                                {
+                                                    <span class="status-badge today">Hoy</span>
+                                                }
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check me-2">
+                                                <input class="form-check-input task-checkbox" 
+                                                    type="checkbox" 
+                                                    id="task-@task.Id" 
+                                                    data-task-id="@task.Id">
+                                            </div>
+                                            <span class="status-badge pending">
+                                                Pendiente
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button type="button" class="action-btn urgent" 
+                                                    data-task-id="@task.Id" data-is-urgent="@task.IsUrgent.ToString().ToLower()"
+                                                    title="Marcar como @(task.IsUrgent ? "no urgente" : "urgente")">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </button>
+                                            <a asp-page="Edit" asp-route-id="@task.Id" class="action-btn edit" title="Editar tarea">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="action-btn cancel-task" 
+                                                    data-task-id="@task.Id" title="Cancelar tarea">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                            <a asp-page="Delete" asp-route-id="@task.Id" class="action-btn delete" title="Eliminar tarea">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-tasks fa-3x mb-3 text-muted"></i>
+                                    <p class="text-muted">No hay tareas pendientes.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tareas de hoy -->
+    <div class="tab-pane fade" id="today">
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Nombre Tarea</th>
+                            <th style="width: 20%">Fecha Vencimiento</th>
+                            <th style="width: 20%">Estado</th>
+                            <th style="width: 20%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DueTodayTasks.Any())
+                        {
+                            @foreach (var task in Model.DueTodayTasks)
+                            {
+                                <tr class="@(task.IsUrgent ? "task-urgent" : "")">
+                                    <td>
+                                        <div class="task-title">
+                                            @if (task.IsUrgent)
+                                            {
+                                                <span class="text-danger me-1"><i class="fas fa-exclamation-circle"></i></span>
+                                            }
+                                            @task.Title
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(task.Description))
+                                        {
+                                            <div class="small text-muted">@task.Description</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-primary">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            @task.DueDate.Value.ToString("dd/MM/yyyy")
+                                            <span class="status-badge today">Hoy</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check me-2">
+                                                <input class="form-check-input task-checkbox" 
+                                                    type="checkbox" 
+                                                    id="task-today-@task.Id" 
+                                                    data-task-id="@task.Id">
+                                            </div>
+                                            <span class="status-badge pending">
+                                                Pendiente
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button type="button" class="action-btn urgent" 
+                                                    data-task-id="@task.Id" data-is-urgent="@task.IsUrgent.ToString().ToLower()"
+                                                    title="Marcar como @(task.IsUrgent ? "no urgente" : "urgente")">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </button>
+                                            <a asp-page="Edit" asp-route-id="@task.Id" class="action-btn edit" title="Editar tarea">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="action-btn cancel-task" 
+                                                    data-task-id="@task.Id" title="Cancelar tarea">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-calendar-day fa-3x mb-3 text-muted"></i>
+                                    <p class="text-muted">No hay tareas para hoy.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tareas próximas -->
+    <div class="tab-pane fade" id="soon">
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Nombre Tarea</th>
+                            <th style="width: 20%">Fecha Vencimiento</th>
+                            <th style="width: 20%">Estado</th>
+                            <th style="width: 20%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DueSoonTasks.Any())
+                        {
+                            @foreach (var task in Model.DueSoonTasks)
+                            {
+                                <tr class="@(task.IsUrgent ? "task-urgent" : "")">
+                                    <td>
+                                        <div class="task-title">
+                                            @if (task.IsUrgent)
+                                            {
+                                                <span class="text-danger me-1"><i class="fas fa-exclamation-circle"></i></span>
+                                            }
+                                            @task.Title
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(task.Description))
+                                        {
+                                            <div class="small text-muted">@task.Description</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            @task.DueDate.Value.ToString("dd/MM/yyyy")
+                                            <span class="status-badge soon">Próximamente</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check me-2">
+                                                <input class="form-check-input task-checkbox" 
+                                                    type="checkbox" 
+                                                    id="task-soon-@task.Id" 
+                                                    data-task-id="@task.Id">
+                                            </div>
+                                            <span class="status-badge pending">
+                                                Pendiente
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button type="button" class="action-btn urgent" 
+                                                    data-task-id="@task.Id" data-is-urgent="@task.IsUrgent.ToString().ToLower()"
+                                                    title="Marcar como @(task.IsUrgent ? "no urgente" : "urgente")">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </button>
+                                            <a asp-page="Edit" asp-route-id="@task.Id" class="action-btn edit" title="Editar tarea">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="action-btn cancel-task" 
+                                                    data-task-id="@task.Id" title="Cancelar tarea">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-calendar-week fa-3x mb-3 text-muted"></i>
+                                    <p class="text-muted">No hay tareas próximas.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tareas atrasadas -->
+    <div class="tab-pane fade" id="overdue">
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Nombre Tarea</th>
+                            <th style="width: 20%">Fecha Vencimiento</th>
+                            <th style="width: 20%">Estado</th>
+                            <th style="width: 20%">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.OverdueTasks.Any())
+                        {
+                            @foreach (var task in Model.OverdueTasks)
+                            {
+                                <tr class="@(task.IsUrgent ? "task-urgent" : "") @(task.Status == TodoTaskStatus.Completed ? "task-completed" : "")">
+                                    <td>
+                                        <div class="task-title">
+                                            @if (task.IsUrgent && task.Status == TodoTaskStatus.Pending)
+                                            {
+                                                <span class="text-danger me-1"><i class="fas fa-exclamation-circle"></i></span>
+                                            }
+                                            @task.Title
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(task.Description))
+                                        {
+                                            <div class="small text-muted">@task.Description</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (task.DueDate.HasValue)
+                                        {
+                                            <span class="text-nowrap">
+                                                <i class="fas fa-calendar-alt me-1"></i>
+                                                @task.DueDate.Value.ToString("dd/MM/yyyy")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check me-2">
+                                                <input class="form-check-input task-checkbox" 
+                                                       type="checkbox" 
+                                                       id="task-@task.Id" 
+                                                       data-task-id="@task.Id" 
+                                                       @(task.Status == TodoTaskStatus.Completed ? "checked" : "")>
+                                            </div>
+                                            <span class="status-badge @(task.Status == TodoTaskStatus.Completed ? "completed" : "pending")">
+                                                @(task.Status == TodoTaskStatus.Completed ? "Completada" : "Pendiente")
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button type="button" class="action-btn urgent" 
+                                                    data-task-id="@task.Id" data-is-urgent="@task.IsUrgent.ToString().ToLower()"
+                                                    title="Marcar como @(task.IsUrgent ? "no urgente" : "urgente")">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </button>
+                                            <a asp-page="Edit" asp-route-id="@task.Id" class="action-btn edit" title="Editar tarea">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="action-btn cancel-task" 
+                                                    data-task-id="@task.Id" title="Cancelar tarea">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                            <a asp-page="Delete" asp-route-id="@task.Id" class="action-btn delete" title="Eliminar tarea">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-tasks fa-3x mb-3 text-muted"></i>
+                                    <p class="text-muted">No hay tareas atrasadas.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-end">
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> Nueva Tarea
+    </a>
 </div>
 
 @section Scripts {
@@ -77,18 +501,18 @@
             $('.task-checkbox').change(function() {
                 var taskId = $(this).data('task-id');
                 var isCompleted = $(this).is(':checked');
+                var $row = $(this).closest('tr');
+                var $statusBadge = $row.find('.status-badge');
                 
                 // Update UI
-                var taskItem = $(this).closest('.task-item');
-                var taskTitle = taskItem.find('.task-title');
-                var taskDescription = taskItem.find('.task-description');
-                
                 if (isCompleted) {
-                    taskTitle.addClass('task-completed');
-                    taskDescription.addClass('task-completed');
+                    $row.addClass('task-completed');
+                    $statusBadge.removeClass('pending').addClass('completed');
+                    $statusBadge.text('Completada');
                 } else {
-                    taskTitle.removeClass('task-completed');
-                    taskDescription.removeClass('task-completed');
+                    $row.removeClass('task-completed');
+                    $statusBadge.removeClass('completed').addClass('pending');
+                    $statusBadge.text('Pendiente');
                 }
                 
                 // Call API to update status
@@ -101,19 +525,70 @@
                     },
                     success: function(data) {
                         console.log('Status updated:', data);
-                        // Refresh task statistics if they exist on the page
-                        refreshTaskStatistics();
                     },
                     error: function(error) {
                         console.error('Error updating task status:', error);
                     }
                 });
             });
+            
+            // Toggle task urgent status via AJAX
+            $('.action-btn.urgent').click(function() {
+                var btn = $(this);
+                var taskId = btn.data('task-id');
+                var isUrgent = btn.data('is-urgent') === 'true';
+                
+                // Call API to toggle urgent status
+                $.ajax({
+                    url: '/Tasks?handler=ToggleUrgent',
+                    type: 'POST',
+                    data: { id: taskId },
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(data) {
+                        console.log('Urgent status toggled:', data);
+                        
+                        // Update UI (reload page for simplicity)
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating urgent status:', error);
+                    }
+                });
+            });
+            
+            // Cancel task via AJAX
+            $('.cancel-task').click(function() {
+                if (confirm('¿Estás seguro de que deseas cancelar esta tarea?')) {
+                    var btn = $(this);
+                    var taskId = btn.data('task-id');
+                    
+                    // Call API to cancel task
+                    $.ajax({
+                        url: '/Tasks?handler=CancelTask',
+                        type: 'POST',
+                        data: { id: taskId },
+                        headers: {
+                            "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function(data) {
+                            console.log('Task cancelled:', data);
+                            
+                            // Update UI (reload page for simplicity)
+                            location.reload();
+                        },
+                        error: function(error) {
+                            console.error('Error cancelling task:', error);
+                        }
+                    });
+                }
+            });
         });
     </script>
     
     @{
-        // Include the antiforgery token (automatically added by ASP.NET Core)
+        // Include the antiforgery token
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <form method="post" id="antiforgeryForm">

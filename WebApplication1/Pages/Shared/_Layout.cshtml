@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Task Manager</title>
+    <title>@ViewData["Title"] - MP MiPanel</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
@@ -12,8 +12,8 @@
 <body>
     <header class="app-header">
         <nav class="navbar navbar-expand-sm app-navbar">
-            <div class="container">
-                <a class="navbar-brand app-title" asp-area="" asp-page="/Index">Task Manager</a>
+            <div class="container-fluid px-4">
+                <a class="navbar-brand app-title" asp-area="" asp-page="/Index">MP MiPanel</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link" id="toggleSidebar">
-                                <i class="fas fa-bars"></i> Toggle navigation
+                                Toggle navigation
                             </a>
                         </li>
                     </ul>
@@ -66,20 +66,23 @@
     <div class="main-container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="javascript:void(0)" class="toggle-sidebar-btn d-md-none">
-                <i class="fas fa-times"></i>
-            </a>
             <a class="sidebar-item" asp-page="/Index">
                 <i class="fas fa-home sidebar-icon"></i> Inicio
             </a>
             <a class="sidebar-item" asp-page="/Tasks/Index">
-                <i class="fas fa-tasks sidebar-icon"></i> Tareas
+                <i class="fas fa-tasks sidebar-icon"></i> Tareas Asignadas
             </a>
-            <a class="sidebar-item" asp-page="/Account/Profile">
-                <i class="fas fa-user sidebar-icon"></i> Mi Perfil
+            <a class="sidebar-item" asp-page="/Tasks/Completed">
+                <i class="fas fa-check-circle sidebar-icon"></i> Tareas Finalizadas
+            </a>
+            <a class="sidebar-item" asp-page="/Tasks/Cancelled">
+                <i class="fas fa-ban sidebar-icon"></i> Tareas Canceladas
             </a>
             <a class="sidebar-item" asp-page="/Privacy">
                 <i class="fas fa-lock sidebar-icon"></i> Privacidad
+            </a>
+            <a href="javascript:void(0)" class="toggle-sidebar-btn d-md-none">
+                <i class="fas fa-times"></i>
             </a>
         </div>
 
@@ -106,12 +109,6 @@
             </main>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container text-center">
-            &copy; 2025 - Task Manager - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

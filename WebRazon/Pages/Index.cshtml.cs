@@ -10,7 +10,7 @@ namespace WebRazon.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly TaskService _taskService;
+        public readonly TaskService _taskService;
 
         public List<TaskItem> Tasks { get; set; } = new List<TaskItem>();
         
@@ -22,6 +22,19 @@ namespace WebRazon.Pages
         
         [BindProperty]
         public DateTime? DueDate { get; set; }
+        
+        public string CurrentFilter { get; set; } = "all"; // all, active, completed, canceled, today, week, month, important
+        public string CurrentCategory { get; set; } = "pending"; // pending, completed, canceled, important
+        
+        public string ActiveFilterClass(string tabName)
+        {
+            return CurrentFilter == tabName ? "active" : "";
+        }
+        
+        public string ActiveCategoryClass(string categoryName)
+        {
+            return CurrentCategory == categoryName ? "active" : "";
+        }
 
         public IndexModel(ILogger<IndexModel> logger, TaskService taskService)
         {
@@ -29,15 +42,18 @@ namespace WebRazon.Pages
             _taskService = taskService;
         }
 
-        public void OnGet()
+        public void OnGet(string filter = "all", string category = "pending")
         {
+            CurrentFilter = filter;
+            CurrentCategory = category;
             LoadTasks();
         }
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(TaskName))
             {
+                ModelState.AddModelError("TaskName", "El nombre de la tarea es obligatorio");
                 LoadTasks();
                 return Page();
             }
@@ -52,33 +68,61 @@ namespace WebRazon.Pages
             _taskService.AddTask(newTask);
             _logger.LogInformation("Nueva tarea creada: {TaskName}", TaskName);
             
-            return RedirectToPage();
+            return RedirectToPage(new { filter = CurrentFilter, category = CurrentCategory });
         }
 
-        public IActionResult OnGetComplete(int id)
+        public IActionResult OnGetComplete(int id, string returnFilter = "all", string returnCategory = "pending")
         {
             _taskService.MarkAsCompleted(id);
             _logger.LogInformation("Tarea marcada como completada: {TaskId}", id);
-            return RedirectToPage();
+            return RedirectToPage(new { filter = returnFilter, category = returnCategory });
         }
 
-        public IActionResult OnGetCancel(int id)
+        public IActionResult OnGetCancel(int id, string returnFilter = "all", string returnCategory = "pending")
         {
             _taskService.CancelTask(id);
             _logger.LogInformation("Tarea cancelada: {TaskId}", id);
-            return RedirectToPage();
+            return RedirectToPage(new { filter = returnFilter, category = returnCategory });
         }
 
-        public IActionResult OnGetDelete(int id)
+        public IActionResult OnGetDelete(int id, string returnFilter = "all", string returnCategory = "pending")
         {
             _taskService.DeleteTask(id);
             _logger.LogInformation("Tarea eliminada: {TaskId}", id);
-            return RedirectToPage();
+            return RedirectToPage(new { filter = returnFilter, category = returnCategory });
         }
 
         private void LoadTasks()
         {
-            Tasks = _taskService.GetAllTasks();
+            switch (CurrentCategory)
+            {
+                case "completed":
+                    Tasks = _taskService.GetCompletedTasks();
+                    break;
+                case "canceled":
+                    Tasks = _taskService.GetCanceledTasks();
+                    break;
+                case "important":
+                    Tasks = _taskService.GetImportantTasks();
+                    break;
+                default: // "pending"
+                    switch (CurrentFilter)
+                    {
+                        case "today":
+                            Tasks = _taskService.GetTasksForToday();
+                            break;
+                        case "week":
+                            Tasks = _taskService.GetTasksForThisWeek();
+                            break;
+                        case "month":
+                            Tasks = _taskService.GetTasksForThisMonth();
+                            break;
+                        default:
+                            Tasks = _taskService.GetActiveTasks();
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }

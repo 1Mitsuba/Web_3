@@ -1,61 +1,31 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// TaskManager - Script principal
 document.addEventListener('DOMContentLoaded', function() {
-    // Elementos principales
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('content');
+    // Configuración del sidebar
+    var sidebarToggle = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('sidebar');
+    var content = document.getElementById('content');
     
-    // Función para controlar la visibilidad del sidebar
-    function toggleSidebar() {
-        if (!sidebar || !content) return;
-        
-        // Toggle sidebar
-        sidebar.classList.toggle('collapsed');
-        
-        // Ajustar contenido
-        content.classList.toggle('expanded');
-        
-        // Guardar preferencia en localStorage
-        const isSidebarVisible = !sidebar.classList.contains('collapsed');
-        localStorage.setItem('sidebarVisible', isSidebarVisible ? 'true' : 'false');
-    }
-    
-    // Listener para el botón de toggle
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            toggleSidebar();
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            if (content) content.classList.toggle('expanded');
+            
+            // Guardar el estado del sidebar en localStorage
+            var isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
         });
     }
     
-    // Cerrar sidebar al hacer click fuera en dispositivos móviles
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth < 992 && 
-            sidebar && 
-            !sidebar.classList.contains('collapsed') && 
-            !sidebar.contains(e.target) && 
-            (!sidebarToggle || !sidebarToggle.contains(e.target))) {
-            
-            toggleSidebar();
-        }
-    });
-    
-    // Restaurar estado del sidebar desde localStorage
+    // Restaurar el estado del sidebar desde localStorage
     function restoreSidebarState() {
-        if (!sidebar || !content) return;
+        var isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         
-        const isSidebarVisible = localStorage.getItem('sidebarVisible');
-        const isSmallScreen = window.innerWidth < 992;
-        
-        if (isSmallScreen || isSidebarVisible === 'false') {
-            // En pantallas pequeñas o si el usuario lo ocultó previamente
+        if (isCollapsed && window.innerWidth >= 992) {
             sidebar.classList.add('collapsed');
             content.classList.add('expanded');
         } else {
-            // Por defecto en pantallas grandes, mostrar sidebar
             sidebar.classList.remove('collapsed');
             content.classList.remove('expanded');
         }
@@ -69,19 +39,72 @@ document.addEventListener('DOMContentLoaded', function() {
         const isSmallScreen = window.innerWidth < 992;
         
         if (isSmallScreen && sidebar && !sidebar.classList.contains('collapsed')) {
-            // En pantallas pequeñas, ocultar sidebar
             sidebar.classList.add('collapsed');
             if (content) content.classList.add('expanded');
         } else if (!isSmallScreen) {
-            // En pantallas grandes, restaurar preferencia
             restoreSidebarState();
         }
     });
     
+    // Configuración del autocompletado
+    $(function() {
+        if ($("#search-tasks").length > 0) {
+            $("#search-tasks").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "/api/tasks/search",
+                        method: "GET",
+                        data: { term: request.term },
+                        success: function(data) {
+                            response(data.map(function(item) {
+                                return {
+                                    label: item.nombre + (item.descripcion ? ' - ' + item.descripcion : ''),
+                                    value: item.nombre,
+                                    id: item.id,
+                                    estado: item.estado
+                                };
+                            }));
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    if (ui.item) {
+                        window.location.href = "/TaskDetail?id=" + ui.item.id + "&returnPage=/Index";
+                    }
+                    return false;
+                },
+                focus: function(event, ui) {
+                    event.preventDefault();
+                    $(this).val(ui.item.value);
+                }
+            }).autocomplete("instance")._renderItem = function(ul, item) {
+                return $("<li>")
+                    .append("<div class='autocomplete-item'>" +
+                        "<div class='task-name'>" + item.value + "</div>" +
+                        "<span class='badge " + getStatusBadgeClass(item.estado) + "'>" + 
+                        item.estado + "</span></div>")
+                    .appendTo(ul);
+            };
+        }
+    });
+    
+    // Función auxiliar para determinar la clase CSS del badge según el estado
+    function getStatusBadgeClass(estado) {
+        switch(estado.toLowerCase()) {
+            case 'completada':
+                return 'bg-success';
+            case 'cancelada':
+                return 'bg-danger';
+            default:
+                return 'bg-primary';
+        }
+    }
+    
     // Inicializar tooltips de Bootstrap
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     if (typeof bootstrap !== 'undefined') {
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     }
@@ -89,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar dropdowns de Bootstrap
     var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
     if (typeof bootstrap !== 'undefined') {
-        var dropdownList = dropdownTriggerList.map(function (dropdownTriggerEl) {
+        dropdownTriggerList.map(function (dropdownTriggerEl) {
             return new bootstrap.Dropdown(dropdownTriggerEl)
         });
     }

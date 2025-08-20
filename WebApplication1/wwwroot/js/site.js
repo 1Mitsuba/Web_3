@@ -8,16 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = document.body;
     const sidebar = document.querySelector('.sidebar');
     const toggleBtn = document.querySelector('.toggle-sidebar-btn');
-    const footer = document.querySelector('.footer');
     
     // Check if sidebar state is saved in localStorage
     const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
     if (sidebarCollapsed) {
         body.classList.add('sidebar-collapsed');
-        if (toggleSidebarBtn) {
-            toggleSidebarBtn.querySelector('i').classList.remove('fa-bars');
-            toggleSidebarBtn.querySelector('i').classList.add('fa-angles-right');
-        }
     }
     
     if (toggleSidebarBtn) {
@@ -25,15 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.toggle('sidebar-collapsed');
             const isCollapsed = body.classList.contains('sidebar-collapsed');
             localStorage.setItem('sidebarCollapsed', isCollapsed);
-            
-            // Change icon based on sidebar state
-            if (isCollapsed) {
-                toggleSidebarBtn.querySelector('i').classList.remove('fa-bars');
-                toggleSidebarBtn.querySelector('i').classList.add('fa-angles-right');
-            } else {
-                toggleSidebarBtn.querySelector('i').classList.remove('fa-angles-right');
-                toggleSidebarBtn.querySelector('i').classList.add('fa-bars');
-            }
         });
     }
     
@@ -44,81 +30,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Check if footer is in viewport and adjust sidebar accordingly
-    function checkFooterVisibility() {
-        if (footer && sidebar) {
-            const footerRect = footer.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            
-            // Log for debugging
-            console.log('Footer top position:', footerRect.top);
-            console.log('Window height:', windowHeight);
-            
-            // If footer is visible in the viewport
-            if (footerRect.top < windowHeight) {
-                console.log('Footer is visible');
-                body.classList.add('has-footer-visible');
-            } else {
-                console.log('Footer is not visible');
-                body.classList.remove('has-footer-visible');
-            }
-            
-            // Force the sidebar to extend to the bottom of the page
-            if (footerRect.top > windowHeight) {
-                sidebar.style.height = `calc(100vh - var(--header-height))`;
-            } else {
-                sidebar.style.height = `calc(100vh - var(--header-height) - var(--footer-height))`;
-            }
+    // Highlight active sidebar item
+    const currentPath = window.location.pathname.toLowerCase();
+    const sidebarItems = document.querySelectorAll('.sidebar-item');
+    
+    sidebarItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href && currentPath.includes(href.toLowerCase())) {
+            item.classList.add('active');
         }
-    }
-    
-    // Check footer visibility on load, scroll and resize
-    if (footer && sidebar) {
-        // Run initially
-        setTimeout(checkFooterVisibility, 100);
-        
-        // Add event listeners
-        window.addEventListener('scroll', checkFooterVisibility);
-        window.addEventListener('resize', checkFooterVisibility);
-        
-        // Run again after a slight delay to ensure all elements are fully loaded
-        setTimeout(checkFooterVisibility, 500);
-    }
-    
-    // Task filtering
-    const filterButtons = document.querySelectorAll('.filter-button');
-    if (filterButtons.length > 0) {
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                const filter = this.dataset.filter;
-                filterTasks(filter);
-            });
-        });
-    }
+    });
     
     // Task completion toggling
     const taskCheckboxes = document.querySelectorAll('.task-checkbox');
     if (taskCheckboxes.length > 0) {
         taskCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
-                const taskItem = this.closest('.task-item');
-                const taskTitle = taskItem.querySelector('.task-title');
-                const taskDescription = taskItem.querySelector('.task-description');
-                
-                if (this.checked) {
-                    taskTitle.classList.add('task-completed');
-                    taskDescription.classList.add('task-completed');
-                } else {
-                    taskTitle.classList.remove('task-completed');
-                    taskDescription.classList.remove('task-completed');
-                }
-                
                 updateTaskStatus(this.dataset.taskId, this.checked);
             });
         });
@@ -137,26 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
     }
-});
-
-// Function to filter tasks based on status
-function filterTasks(filter) {
-    const tasks = document.querySelectorAll('.task-item');
     
-    tasks.forEach(task => {
-        const isCompleted = task.querySelector('.task-checkbox').checked;
-        
-        if (filter === 'all') {
-            task.style.display = '';
-        } else if (filter === 'completed' && isCompleted) {
-            task.style.display = '';
-        } else if (filter === 'pending' && !isCompleted) {
-            task.style.display = '';
-        } else {
-            task.style.display = 'none';
-        }
+    // Add table row hover effect
+    const tableRows = document.querySelectorAll('.task-table tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'rgba(0,0,0,0.02)';
+        });
+        row.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '';
+        });
     });
-}
+});
 
 // Function to update task status with AJAX and refresh statistics
 function updateTaskStatus(taskId, isCompleted) {
@@ -181,14 +100,27 @@ function refreshTaskStatistics() {
             const totalTasksElement = document.querySelector('.task-stats .total-tasks');
             const completedTasksElement = document.querySelector('.task-stats .completed-tasks');
             const pendingTasksElement = document.querySelector('.task-stats .pending-tasks');
+            const urgentTasksElement = document.querySelector('.task-stats .urgent-tasks');
             
-            if (totalTasksElement && completedTasksElement && pendingTasksElement) {
+            if (totalTasksElement) {
                 totalTasksElement.textContent = data.totalTasks;
+            }
+            
+            if (completedTasksElement) {
                 completedTasksElement.textContent = data.completedTasks;
+            }
+            
+            if (pendingTasksElement) {
                 pendingTasksElement.textContent = data.pendingTasks;
-                
-                // Add animation to show that the stats have been updated
-                const statsContainer = document.querySelector('.task-stats');
+            }
+            
+            if (urgentTasksElement) {
+                urgentTasksElement.textContent = data.urgentTasks;
+            }
+            
+            // Add animation to show that the stats have been updated
+            const statsContainer = document.querySelector('.task-stats');
+            if (statsContainer) {
                 statsContainer.classList.add('task-stats-refresh');
                 
                 // Remove animation class after animation completes

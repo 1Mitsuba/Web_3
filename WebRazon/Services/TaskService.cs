@@ -67,6 +67,51 @@ namespace WebRazon.Services
         {
             return _tasks.Where(t => t.EstaCancelada).ToList();
         }
+        
+        public List<TaskItem> GetTasksForToday()
+        {
+            DateTime today = DateTime.Today;
+            return _tasks.Where(t => !t.EstaCompletada && !t.EstaCancelada && 
+                                    t.FechaVencimiento.HasValue && 
+                                    t.FechaVencimiento.Value.Date == today).ToList();
+        }
+        
+        public List<TaskItem> GetTasksForThisWeek()
+        {
+            DateTime today = DateTime.Today;
+            DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+            DateTime endOfWeek = startOfWeek.AddDays(6);
+            
+            return _tasks.Where(t => !t.EstaCompletada && !t.EstaCancelada && 
+                                    t.FechaVencimiento.HasValue && 
+                                    t.FechaVencimiento.Value.Date >= today && 
+                                    t.FechaVencimiento.Value.Date <= endOfWeek).ToList();
+        }
+        
+        public List<TaskItem> GetTasksForThisMonth()
+        {
+            DateTime today = DateTime.Today;
+            DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+            
+            return _tasks.Where(t => !t.EstaCompletada && !t.EstaCancelada && 
+                                    t.FechaVencimiento.HasValue && 
+                                    t.FechaVencimiento.Value.Date >= today && 
+                                    t.FechaVencimiento.Value.Date <= endOfMonth).ToList();
+        }
+        
+        public List<TaskItem> GetImportantTasks()
+        {
+            // Como no tenemos un campo para marcar tareas importantes, asumimos que
+            // son las tareas activas cuya fecha de vencimiento está en los próximos 3 días
+            DateTime today = DateTime.Today;
+            DateTime urgentDeadline = today.AddDays(3);
+            
+            return _tasks.Where(t => !t.EstaCompletada && !t.EstaCancelada && 
+                                    t.FechaVencimiento.HasValue && 
+                                    t.FechaVencimiento.Value.Date <= urgentDeadline && 
+                                    t.FechaVencimiento.Value.Date >= today).ToList();
+        }
 
         public TaskItem GetTaskById(int id)
         {

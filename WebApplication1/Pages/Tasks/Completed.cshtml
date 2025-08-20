@@ -1,0 +1,89 @@
+@page
+@model WebApplication1.Pages.Tasks.CompletedModel
+@{
+    ViewData["Title"] = "Tareas Finalizadas";
+}
+
+<h1 class="page-title">Tareas Finalizadas</h1>
+
+<!-- Navegación entre tipos de tareas -->
+<div class="mb-4">
+    <div class="btn-group">
+        <a asp-page="Index" class="btn btn-outline-primary">Tareas Asignadas</a>
+        <a asp-page="Completed" class="btn btn-primary active">Tareas Finalizadas</a>
+        <a asp-page="Cancelled" class="btn btn-outline-primary">Tareas Canceladas</a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body p-0">
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th style="width: 40%">Nombre Tarea</th>
+                    <th style="width: 20%">Fecha Finalización</th>
+                    <th style="width: 20%">Estado</th>
+                    <th style="width: 20%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Tasks.Any())
+                {
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <tr class="task-completed">
+                            <td>
+                                <div class="task-title">@task.Title</div>
+                                @if (!string.IsNullOrEmpty(task.Description))
+                                {
+                                    <div class="small text-muted">@task.Description</div>
+                                }
+                            </td>
+                            <td>
+                                @if (task.CompletedDate.HasValue)
+                                {
+                                    <span class="text-nowrap">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        @task.CompletedDate.Value.ToString("dd/MM/yyyy")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="status-badge completed">Completada</span>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <a asp-page="Edit" asp-route-id="@task.Id" class="action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-page="Delete" asp-route-id="@task.Id" class="action-btn delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-5">
+                            <i class="fas fa-check-circle fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">No hay tareas finalizadas.</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

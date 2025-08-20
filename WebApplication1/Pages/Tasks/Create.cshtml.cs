@@ -14,11 +14,11 @@ namespace WebApplication1.Pages.Tasks
         public CreateModel(TaskService taskService)
         {
             _taskService = taskService;
+            Task = new TodoTask();
         }
 
         public void OnGet()
         {
-            Task = new TodoTask();
         }
 
         public IActionResult OnPost()
@@ -28,7 +28,18 @@ namespace WebApplication1.Pages.Tasks
                 return Page();
             }
 
+            // Configurar estado inicial de la tarea
+            if (Task.Status == TodoTaskStatus.Completed)
+            {
+                Task.CompletedDate = System.DateTime.Now;
+            }
+            else if (Task.Status == TodoTaskStatus.Cancelled)
+            {
+                Task.CancelledDate = System.DateTime.Now;
+            }
+
             _taskService.AddTask(Task);
+
             return RedirectToPage("./Index");
         }
     }

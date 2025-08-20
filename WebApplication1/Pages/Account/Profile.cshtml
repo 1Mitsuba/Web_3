@@ -31,12 +31,29 @@
                         <span>Tareas completadas:</span>
                         <span class="badge bg-success rounded-pill completed-tasks">@Model.CompletedTasks</span>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <span>Tareas pendientes:</span>
                         <span class="badge bg-warning rounded-pill pending-tasks">@Model.PendingTasks</span>
                     </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> Tareas urgentes:</span>
+                        <span class="badge bg-danger rounded-pill urgent-tasks">@Model.UrgentTasks</span>
+                    </div>
                 </div>
             </div>
+            
+            @if (Model.UrgentTasks > 0)
+            {
+                <div class="card border-danger mt-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i> Atención</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Tiene <strong>@Model.UrgentTasks</strong> tareas urgentes pendientes.</p>
+                        <a asp-page="/Tasks/Index" class="btn btn-danger btn-sm">Ver tareas urgentes</a>
+                    </div>
+                </div>
+            }
         </div>
         
         <div class="col-md-8">

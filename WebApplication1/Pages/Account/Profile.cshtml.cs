@@ -32,6 +32,7 @@ namespace WebApplication1.Pages.Account
         public int TotalTasks { get; set; }
         public int CompletedTasks { get; set; }
         public int PendingTasks { get; set; }
+        public int UrgentTasks { get; set; }
 
         public class PasswordChangeModel
         {
@@ -134,6 +135,7 @@ namespace WebApplication1.Pages.Account
             TotalTasks = _taskService.GetAllTasks().Count;
             CompletedTasks = _taskService.GetCompletedTasks().Count;
             PendingTasks = _taskService.GetPendingTasks().Count;
+            UrgentTasks = _taskService.GetUrgentTasks().Count;
         }
     }
 }

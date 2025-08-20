@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 
 <body>
@@ -78,14 +80,29 @@
     <!-- Barra de búsqueda -->
     <div class="search-bar">
         <div class="container">
-            <form class="d-flex">
+            <form class="d-flex" id="search-form" onsubmit="return false;">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Buscar tareas..." aria-label="Buscar">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    <input id="search-tasks" class="form-control" type="search" 
+                           placeholder="Buscar tareas por nombre o descripción..." 
+                           aria-label="Buscar">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+
+    @{
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+        var isTasksPage = currentPage != null && (
+            currentPage == "/Tasks/Today" || 
+            currentPage == "/Tasks/Week" || 
+            currentPage == "/Tasks/Month"
+        );
+    }
 
     <!-- Contenedor principal -->
     <div class="main-container">
@@ -93,7 +110,8 @@
         <aside class="sidebar" id="sidebar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" asp-area="" asp-page="/Index">
+                    <a class="nav-link @(currentPage == "/Index" ? "active" : "")" 
+                       asp-page="/Index">
                         <i class="fas fa-home"></i> Inicio
                     </a>
                 </li>
@@ -101,33 +119,44 @@
                 <!-- Sección de tareas -->
                 <li class="sidebar-category-title mt-3">TAREAS</li>
                 <li class="nav-item">
-                    <a class="nav-link sidebar-dropdown-toggle" data-bs-toggle="collapse" href="#tasksSubmenu"
-                        role="button" aria-expanded="false" aria-controls="tasksSubmenu">
+                    <a class="nav-link sidebar-dropdown-toggle @(isTasksPage ? "active" : "")" data-bs-toggle="collapse" href="#tasksSubmenu"
+                        role="button" aria-expanded="@(isTasksPage ? "true" : "false")" aria-controls="tasksSubmenu">
                         <i class="fas fa-clipboard-list"></i> Tareas pendientes
                     </a>
-                    <div class="collapse sidebar-dropdown-menu" id="tasksSubmenu">
+                    <div class="collapse @(isTasksPage ? "show" : "") sidebar-dropdown-menu" id="tasksSubmenu">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Hoy</a>
+                                <a class="nav-link @(currentPage == "/Tasks/Today" ? "active" : "")" 
+                                   asp-page="/Tasks/Today">
+                                    <i class="fas fa-calendar-day me-2"></i> Hoy
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Esta semana</a>
+                                <a class="nav-link @(currentPage == "/Tasks/Week" ? "active" : "")" 
+                                   asp-page="/Tasks/Week">
+                                    <i class="fas fa-calendar-week me-2"></i> Esta semana
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Este mes</a>
+                                <a class="nav-link @(currentPage == "/Tasks/Month" ? "active" : "")" 
+                                   asp-page="/Tasks/Month">
+                                    <i class="fas fa-calendar-alt me-2"></i> Este mes
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link @(currentPage == "/Tasks/Completed" ? "active" : "")" 
+                       asp-page="/Tasks/Completed">
                         <i class="fas fa-check-circle"></i> Tareas completadas
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link @(currentPage == "/Tasks/Canceled" ? "active" : "")" 
+                       asp-page="/Tasks/Canceled">
                         <i class="fas fa-ban"></i> Tareas canceladas
                     </a>
                 </li>
@@ -153,7 +182,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-page="/Privacy">
+                    <a class="nav-link @(currentPage == "/Privacy" ? "active" : "")" 
+                       asp-page="/Privacy">
                         <i class="fas fa-shield-alt"></i> Privacidad
                     </a>
                 </li>
@@ -207,6 +237,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

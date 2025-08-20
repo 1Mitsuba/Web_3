@@ -1,48 +1,57 @@
 @page
 @model WebApplication1.Pages.Tasks.CreateModel
+@using WebApplication1.Models
 @{
     ViewData["Title"] = "Nueva Tarea";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Nueva Tarea</h1>
+<h1 class="page-title">Nueva Tarea</h1>
 
-    <form method="post">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="mb-3">
-                    <label asp-for="Task.Title" class="form-label">Título</label>
-                    <input asp-for="Task.Title" class="form-control" />
-                    <span asp-validation-for="Task.Title" class="text-danger"></span>
-                </div>
+<form method="post">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Task.Title" class="form-label">Título</label>
+                <input asp-for="Task.Title" class="form-control" />
+                <span asp-validation-for="Task.Title" class="text-danger"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Task.Description" class="form-label">Descripción</label>
-                    <textarea asp-for="Task.Description" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Task.Description" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="Task.Description" class="form-label">Descripción</label>
+                <textarea asp-for="Task.Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Task.Description" class="text-danger"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Task.DueDate" class="form-label">Fecha límite</label>
-                    <input type="date" asp-for="Task.DueDate" class="form-control" />
-                    <span asp-validation-for="Task.DueDate" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="Task.DueDate" class="form-label">Fecha límite</label>
+                <input type="date" asp-for="Task.DueDate" class="form-control" />
+                <span asp-validation-for="Task.DueDate" class="text-danger"></span>
+            </div>
 
-                <div class="form-check mb-3">
-                    <input class="form-check-input" asp-for="Task.IsCompleted" type="checkbox" id="taskIsCompleted">
-                    <label class="form-check-label" for="taskIsCompleted">
-                        Tarea completada
-                    </label>
-                </div>
+            <div class="mb-3">
+                <label asp-for="Task.Status" class="form-label">Estado</label>
+                <select asp-for="Task.Status" class="form-select">
+                    <option value="@TodoTaskStatus.Pending">Pendiente</option>
+                    <option value="@TodoTaskStatus.Completed">Completada</option>
+                    <option value="@TodoTaskStatus.Cancelled">Cancelada</option>
+                </select>
+                <span asp-validation-for="Task.Status" class="text-danger"></span>
+            </div>
+            
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="Task.IsUrgent" type="checkbox" id="taskIsUrgent">
+                <label class="form-check-label" for="taskIsUrgent">
+                    <span class="text-danger"><i class="fas fa-exclamation-triangle"></i> Tarea urgente</span>
+                </label>
+            </div>
 
-                <div class="d-flex justify-content-between">
-                    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
+            <div class="d-flex justify-content-between">
+                <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

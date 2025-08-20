@@ -18,6 +18,7 @@ namespace WebApplication1.Pages
         public int TotalTasks { get; private set; }
         public int CompletedTasks { get; private set; }
         public int PendingTasks { get; private set; }
+        public int UrgentTasks { get; private set; }
 
         public void OnGet()
         {
@@ -29,6 +30,7 @@ namespace WebApplication1.Pages
             TotalTasks = _taskService.GetAllTasks().Count;
             CompletedTasks = _taskService.GetCompletedTasks().Count;
             PendingTasks = _taskService.GetPendingTasks().Count;
+            UrgentTasks = _taskService.GetUrgentTasks().Count;
         }
 
         public JsonResult OnGetTaskStats()
@@ -37,7 +39,8 @@ namespace WebApplication1.Pages
             return new JsonResult(new { 
                 totalTasks = TotalTasks,
                 completedTasks = CompletedTasks,
-                pendingTasks = PendingTasks
+                pendingTasks = PendingTasks,
+                urgentTasks = UrgentTasks
             });
         }
     }

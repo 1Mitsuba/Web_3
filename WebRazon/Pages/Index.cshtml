@@ -4,120 +4,186 @@
     ViewData["Title"] = "Gestor de Tareas";
 }
 
-<div class="row">
-    <div class="col-md-3">
-        <div class="list-group mb-4">
-            <div class="list-group-item bg-primary text-white">
-                <strong>INICIO</strong>
-            </div>
-            <a href="#" class="list-group-item list-group-item-action active">
-                Tareas pendientes
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-                Tareas completadas
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-                Tareas canceladas
-            </a>
-        </div>
-        
+<!-- Sección de bienvenida -->
+<div class="row mb-4">
+    <div class="col-12">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <strong>Crear nueva tarea</strong>
+                <h5 class="mb-0">Bienvenido a TaskManager</h5>
             </div>
             <div class="card-body">
-                <form method="post">
-                    <div class="mb-3">
-                        <label for="taskName" class="form-label">Nombre de la tarea</label>
-                        <input type="text" class="form-control" id="taskName" name="taskName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="description" name="description" rows="2"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dueDate" class="form-label">Fecha de vencimiento</label>
-                        <input type="date" class="form-control" id="dueDate" name="dueDate">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Guardar Tarea</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-9">
-        <div class="card">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>Lista de Tareas</strong>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-light btn-sm active">Todas</button>
-                    <button type="button" class="btn btn-light btn-sm">Pendientes</button>
-                    <button type="button" class="btn btn-light btn-sm">Completadas</button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nombre Tarea</th>
-                                <th>Fecha Vencimiento</th>
-                                <th>Estado</th>
-                                <th>ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var task in Model.Tasks)
-                            {
-                                <tr>
-                                    <td>@task.Nombre</td>
-                                    <td>
-                                        @if (task.FechaVencimiento.HasValue)
-                                        {
-                                            @task.FechaVencimiento.Value.ToString("dd/MM/yyyy")
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (task.EstaCompletada)
-                                        {
-                                            <span class="badge bg-success">Completada</span>
-                                        }
-                                        else if (task.EstaCancelada)
-                                        {
-                                            <span class="badge bg-danger">Cancelada</span>
-                                        }
-                                        else if (task.FechaVencimiento.HasValue && task.FechaVencimiento.Value < DateTime.Today)
-                                        {
-                                            <span class="badge bg-warning">Vencida</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-primary">Activa</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a asp-page-handler="Complete" asp-route-id="@task.Id" class="btn btn-success btn-sm" title="Completar">
-                                                <i class="fas fa-check"></i>
-                                            </a>
-                                            <a asp-page="TaskDetail" asp-route-id="@task.Id" class="btn btn-primary btn-sm" title="Editar">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a asp-page-handler="Cancel" asp-route-id="@task.Id" class="btn btn-warning btn-sm" title="Cancelar">
-                                                <i class="fas fa-ban"></i>
-                                            </a>
-                                            <a asp-page-handler="Delete" asp-route-id="@task.Id" class="btn btn-danger btn-sm" title="Eliminar"
-                                               onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <p class="lead">Organiza tus tareas, mejora tu productividad y lleva un seguimiento de tus proyectos.</p>
+                <p>Selecciona una categoría en el menú lateral para ver tus tareas o crea una nueva tarea abajo.</p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Panel para crear nueva tarea -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Crear nueva tarea</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="taskName" class="form-label">Nombre de la tarea</label>
+                                <input type="text" class="form-control" id="taskName" asp-for="TaskName" required>
+                                <span asp-validation-for="TaskName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dueDate" class="form-label">Fecha de vencimiento</label>
+                                <input type="date" class="form-control" id="dueDate" asp-for="DueDate">
+                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="description" asp-for="Description" rows="2"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Tarea</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Resumen de tareas -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Tareas para hoy</h5>
+                    <a asp-page="/Tasks/Today" class="btn btn-sm btn-light">Ver todas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model._taskService.GetTasksForToday().Count == 0)
+                {
+                    <p class="text-muted">No hay tareas programadas para hoy.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var task in Model._taskService.GetTasksForToday().Take(3))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@task.Nombre</span>
+                                @if (task.EstaCompletada)
+                                {
+                                    <span class="badge bg-success rounded-pill">Completada</span>
+                                }
+                                else
+                                {
+                                    <a asp-page="/TaskDetail" asp-route-id="@task.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Tareas completadas</h5>
+                    <a asp-page="/Tasks/Completed" class="btn btn-sm btn-light">Ver todas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model._taskService.GetCompletedTasks().Count == 0)
+                {
+                    <p class="text-muted">No hay tareas completadas.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var task in Model._taskService.GetCompletedTasks().Take(3))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@task.Nombre</span>
+                                <span class="badge bg-success rounded-pill">Completada</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Esta semana</h5>
+                    <a asp-page="/Tasks/Week" class="btn btn-sm btn-light">Ver todas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model._taskService.GetTasksForThisWeek().Count == 0)
+                {
+                    <p class="text-muted">No hay tareas programadas para esta semana.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var task in Model._taskService.GetTasksForThisWeek().Take(3))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@task.Nombre</span>
+                                <span>@(task.FechaVencimiento?.ToString("dd/MM/yyyy"))</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Este mes</h5>
+                    <a asp-page="/Tasks/Month" class="btn btn-sm btn-light">Ver todas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model._taskService.GetTasksForThisMonth().Count == 0)
+                {
+                    <p class="text-muted">No hay tareas programadas para este mes.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var task in Model._taskService.GetTasksForThisMonth().Take(3))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@task.Nombre</span>
+                                <span>@(task.FechaVencimiento?.ToString("dd/MM/yyyy"))</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

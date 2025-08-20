@@ -1,0 +1,147 @@
+@page
+@model WebRazon.Pages.Tasks.MonthModel
+@{
+    ViewData["Title"] = "Tareas del Mes";
+}
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <strong>TAREAS PARA ESTE MES</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <strong>Crear nueva tarea</strong>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="taskName" class="form-label">Nombre de la tarea</label>
+                                <input type="text" class="form-control" id="taskName" asp-for="TaskName" required>
+                                <span asp-validation-for="TaskName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dueDate" class="form-label">Fecha de vencimiento</label>
+                                <input type="date" class="form-control" id="dueDate" asp-for="DueDate">
+                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="description" asp-for="Description" rows="2"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Tarea</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <strong>Lista de Tareas para este Mes</strong>
+                <div class="btn-group" role="group">
+                    <a asp-page="/Tasks/Month" class="btn btn-light btn-sm active">Todas</a>
+                    <a asp-page="/Tasks/Month" asp-page-handler="Pending" class="btn btn-light btn-sm">Pendientes</a>
+                    <a asp-page="/Tasks/Month" asp-page-handler="Completed" class="btn btn-light btn-sm">Completadas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model.Tasks.Count == 0)
+                {
+                    <div class="alert alert-info">
+                        No hay tareas para mostrar para este mes.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Tarea</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Estado</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var task in Model.Tasks)
+                                {
+                                    <tr>
+                                        <td>@task.Nombre</td>
+                                        <td>
+                                            @if (task.FechaVencimiento.HasValue)
+                                            {
+                                                @task.FechaVencimiento.Value.ToString("dd/MM/yyyy")
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (task.EstaCompletada)
+                                            {
+                                                <span class="badge bg-success">Completada</span>
+                                            }
+                                            else if (task.EstaCancelada)
+                                            {
+                                                <span class="badge bg-danger">Cancelada</span>
+                                            }
+                                            else if (task.FechaVencimiento.HasValue && task.FechaVencimiento.Value < DateTime.Today)
+                                            {
+                                                <span class="badge bg-warning">Vencida</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-primary">Activa</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-page-handler="Complete" asp-route-id="@task.Id" 
+                                                   class="btn btn-success btn-sm" title="Completar">
+                                                    <i class="fas fa-check"></i>
+                                                </a>
+                                                <a asp-page="/TaskDetail" asp-route-id="@task.Id" 
+                                                   asp-route-returnPage="/Tasks/Month"
+                                                   class="btn btn-primary btn-sm" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-page-handler="Cancel" asp-route-id="@task.Id"
+                                                   class="btn btn-warning btn-sm" title="Cancelar">
+                                                    <i class="fas fa-ban"></i>
+                                                </a>
+                                                <a asp-page-handler="Delete" asp-route-id="@task.Id"
+                                                   class="btn btn-danger btn-sm" title="Eliminar"
+                                                   onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

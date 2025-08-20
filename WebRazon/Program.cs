@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers(); // Agregar soporte para controladores API
 
 // Register our task service as a singleton
 builder.Services.AddSingleton<WebRazon.Services.TaskService>();
@@ -24,5 +25,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllers(); // Mapear los endpoints de los controladores API
 
 app.Run();

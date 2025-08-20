@@ -35,7 +35,37 @@ namespace WebApplication1.Pages.Tasks
                 return Page();
             }
 
+            // Actualizar fechas basado en el estado
+            var originalTask = _taskService.GetTaskById(Task.Id);
+            
+            // Si cambió de estado, actualizar las fechas correspondientes
+            if (originalTask.Status != Task.Status)
+            {
+                if (Task.Status == TodoTaskStatus.Completed)
+                {
+                    Task.CompletedDate = System.DateTime.Now;
+                    Task.CancelledDate = null;
+                }
+                else if (Task.Status == TodoTaskStatus.Cancelled)
+                {
+                    Task.CancelledDate = System.DateTime.Now;
+                    Task.CompletedDate = null;
+                }
+                else // Pending
+                {
+                    Task.CompletedDate = null;
+                    Task.CancelledDate = null;
+                }
+            }
+            else
+            {
+                // Mantener las fechas originales si no cambió el estado
+                Task.CompletedDate = originalTask.CompletedDate;
+                Task.CancelledDate = originalTask.CancelledDate;
+            }
+
             _taskService.UpdateTask(Task);
+
             return RedirectToPage("./Index");
         }
     }

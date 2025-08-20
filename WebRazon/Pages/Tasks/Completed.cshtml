@@ -1,0 +1,132 @@
+@page
+@model WebRazon.Pages.Tasks.CompletedModel
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Tareas Completadas";
+}
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <strong>TAREAS COMPLETADAS</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <strong>Lista de Tareas Completadas</strong>
+                <div class="btn-group" role="group">
+                    <a asp-page="/Tasks/Completed" class="btn btn-light btn-sm active">Todas</a>
+                    <a asp-page="/Tasks/Completed" asp-page-handler="Recent" class="btn btn-light btn-sm">Recientes</a>
+                    <a asp-page="/Tasks/Completed" asp-page-handler="Old" class="btn btn-light btn-sm">Antiguas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model.PagedTasks == null || !Model.PagedTasks.Any())
+                {
+                    <div class="alert alert-info">
+                        No hay tareas completadas para mostrar.
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <span class="text-muted">Mostrando @Model.PagedTasks.FirstItemOnPage a @Model.PagedTasks.LastItemOnPage de @Model.PagedTasks.TotalItemCount tareas</span>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ordenar por
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item @(Model.SortBy == "date" && Model.SortDirection == "desc" ? "active" : "")" 
+                                       asp-page="/Tasks/Completed" asp-page-handler="Sort" 
+                                       asp-route-sortBy="date" asp-route-sortDirection="desc">Fecha (más reciente)</a></li>
+                                <li><a class="dropdown-item @(Model.SortBy == "date" && Model.SortDirection == "asc" ? "active" : "")"
+                                       asp-page="/Tasks/Completed" asp-page-handler="Sort"
+                                       asp-route-sortBy="date" asp-route-sortDirection="asc">Fecha (más antigua)</a></li>
+                                <li><a class="dropdown-item @(Model.SortBy == "name" && Model.SortDirection == "asc" ? "active" : "")"
+                                       asp-page="/Tasks/Completed" asp-page-handler="Sort"
+                                       asp-route-sortBy="name" asp-route-sortDirection="asc">Nombre (A-Z)</a></li>
+                                <li><a class="dropdown-item @(Model.SortBy == "name" && Model.SortDirection == "desc" ? "active" : "")"
+                                       asp-page="/Tasks/Completed" asp-page-handler="Sort"
+                                       asp-route-sortBy="name" asp-route-sortDirection="desc">Nombre (Z-A)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Tarea</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Estado</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var task in Model.PagedTasks)
+                                {
+                                    <tr>
+                                        <td>@task.Nombre</td>
+                                        <td>
+                                            @if (task.FechaVencimiento.HasValue)
+                                            {
+                                                @task.FechaVencimiento.Value.ToString("dd/MM/yyyy")
+                                            }
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success">Completada</span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-page-handler="Reactivate" asp-route-id="@task.Id" 
+                                                   class="btn btn-primary btn-sm" title="Reactivar">
+                                                    <i class="fas fa-redo"></i>
+                                                </a>
+                                                <a asp-page="/TaskDetail" asp-route-id="@task.Id" 
+                                                   asp-route-returnPage="/Tasks/Completed"
+                                                   class="btn btn-primary btn-sm" title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-page-handler="Delete" asp-route-id="@task.Id"
+                                                   class="btn btn-danger btn-sm" title="Eliminar"
+                                                   onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="mt-4">
+                        @Html.PagedListPager(Model.PagedTasks, page => Url.Page("/Tasks/Completed", new { pageNumber = page }),
+                            new PagedListRenderOptions {
+                                LiElementClasses = new string[] { "page-item" },
+                                PageClasses = new string[] { "page-link" },
+                                LinkToFirstPageFormat = "Primera",
+                                LinkToPreviousPageFormat = "«",
+                                LinkToNextPageFormat = "»",
+                                LinkToLastPageFormat = "Última",
+                                MaximumPageNumbersToDisplay = 5
+                            })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
