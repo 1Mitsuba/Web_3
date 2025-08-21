@@ -1,37 +1,31 @@
-/* Colores específicos para tareas */
 :root {
-  /* Nueva paleta de morados pastel */
-  --primary-color: #a78bfa;        /* Morado claro pastel */
-  --secondary-color: #8b5cf6;      /* Violeta medio */
-  --accent-color: #6d28d9;         /* Violeta profundo */
-  --light-purple: #c4b5fd;         /* Lavanda claro */
-  --ultra-light-purple: #e9d5ff;   /* Lila muy claro */
-  --dark-purple: #5b21b6;          /* Morado oscuro */
-  --vivid-purple: #7c3aed;         /* Violeta vibrante */
+  --primary-color: #a78bfa;
+  --secondary-color: #8b5cf6;
+  --accent-color: #6d28d9;
+  --light-purple: #c4b5fd;
+  --ultra-light-purple: #e9d5ff;
+  --dark-purple: #5b21b6;
+  --vivid-purple: #7c3aed;
   
-  /* Estados de tareas con tonos morados más contrastados */
-  --pendiente-bg: #ddd6fe;         /* Lavanda más claro para pendiente */
-  --pendiente-text: #4c1d95;       /* Texto violeta oscuro */
-  --en-curso-bg: #8b5cf6;          /* Violeta medio para en curso */
-  --en-curso-text: #ffffff;        /* Texto blanco */
-  --finalizado-bg: #6d28d9;        /* Violeta profundo para finalizado */
-  --finalizado-text: #ffffff;      /* Texto blanco */
-  --cancelado-bg: #4c1d95;         /* Violeta muy oscuro para cancelado */
-  --cancelado-text: #ffffff;       /* Texto blanco */
+  --pendiente-bg: #ddd6fe;
+  --pendiente-text: #4c1d95;
+  --en-curso-bg: #8b5cf6;
+  --en-curso-text: #ffffff;
+  --finalizado-bg: #6d28d9;
+  --finalizado-text: #ffffff;
+  --cancelado-bg: #4c1d95;
+  --cancelado-text: #ffffff;
   
-  /* Colores para estadísticas */
-  --stats-completed: #8b5cf6;      /* Violeta medio */
-  --stats-pending: #ddd6fe;        /* Lavanda más claro */
-  --stats-cancelled: #4c1d95;      /* Violeta muy oscuro */
+  --stats-completed: #8b5cf6;
+  --stats-pending: #ddd6fe;
+  --stats-cancelled: #4c1d95;
 }
 
-/* Contenedor de contenido */
 .content-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Títulos */
 .tareas-title {
   color: var(--dark-purple);
   font-weight: 600;
@@ -42,7 +36,6 @@
   display: inline-block;
 }
 
-/* Tabla de tareas */
 .table {
   margin-bottom: 0;
   background-color: white;
@@ -72,7 +65,6 @@
   box-shadow: 0 1px 3px rgba(124, 58, 237, 0.1);
 }
 
-/* Badges para estados - colores más distintivos */
 .badge {
   padding: 0.5rem 1rem;
   font-weight: 500;
@@ -104,7 +96,6 @@
   color: var(--cancelado-text) !important;
 }
 
-/* Botones de acción - colores más distintivos */
 .action-buttons {
   display: flex;
   gap: 5px;
@@ -125,7 +116,6 @@
   transition: all 0.2s ease;
 }
 
-/* Botones de acción con colores específicos */
 .btn-action.btn-view {
   color: var(--vivid-purple);
   border-color: var(--vivid-purple);
@@ -154,7 +144,6 @@
   box-shadow: 0 2px 4px rgba(124, 58, 237, 0.15);
 }
 
-/* Selector de tamaño de página - mejor contraste */
 .items-per-page {
   background-color: #ede9fe;
   padding: 8px 16px;
@@ -170,7 +159,6 @@
   margin-bottom: 0;
 }
 
-/* Estilizar el selector desplegable */
 .form-select-sm {
   padding: 0.25rem 1.5rem 0.25rem 0.75rem;
   font-size: 0.9rem;
@@ -190,7 +178,6 @@
   background-size: 16px 12px;
 }
 
-/* Opciones del selector - eliminar color plomo */
 select.form-select-sm option {
   background-color: #f5f3ff !important;
   color: var(--dark-purple) !important;
@@ -198,14 +185,12 @@ select.form-select-sm option {
   font-weight: 500 !important;
 }
 
-/* Opción seleccionada */
 select.form-select-sm option:checked {
   background-color: var(--secondary-color) !important;
   color: white !important;
   box-shadow: 0 0 10px 100px var(--secondary-color) inset !important;
 }
 
-/* Opciones al pasar el ratón */
 select.form-select-sm option:hover,
 select.form-select-sm option:focus {
   background-color: var(--ultra-light-purple) !important;
@@ -213,7 +198,6 @@ select.form-select-sm option:focus {
   box-shadow: 0 0 10px 100px var(--ultra-light-purple) inset !important;
 }
 
-/* Efecto al seleccionar una opción */
 select.form-select-sm:focus {
   border-color: var(--vivid-purple);
   box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
@@ -225,7 +209,6 @@ select.form-select-sm:focus {
   font-weight: 500;
 }
 
-/* Paginación */
 .pagination {
   margin: 0;
   display: flex;
@@ -269,7 +252,6 @@ select.form-select-sm:focus {
   box-shadow: none;
 }
 
-/* Campo de búsqueda */
 .input-group .form-control {
   border-right: none;
   border-color: #e9d5ff;
@@ -286,7 +268,6 @@ select.form-select-sm:focus {
   border-color: var(--vivid-purple);
 }
 
-/* Estilos para la página de perfil */
 .avatar-circle {
   width: 100px;
   height: 100px;
@@ -305,7 +286,6 @@ select.form-select-sm:focus {
   font-weight: 600;
 }
 
-/* Colores de estadísticas de perfil */
 .text-primary {
   color: var(--vivid-purple) !important;
 }
@@ -337,7 +317,89 @@ select.form-select-sm:focus {
   color: var(--dark-purple);
 }
 
-/* Media queries */
+.btn-crear-tarea {
+  background-color: var(--vivid-purple);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+}
+
+.btn-crear-tarea:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(124, 58, 237, 0.3);
+}
+
+.btn-crear-tarea:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(124, 58, 237, 0.3);
+}
+
+.btn-crear-tarea i {
+  font-size: 1.1rem;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2);
+}
+
+.modal-header {
+  background-color: var(--secondary-color);
+  color: white;
+  border-bottom: none;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9d5ff;
+  padding: 1rem 1.5rem;
+}
+
+.btn-close {
+  color: white;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  opacity: 0.8;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+.form-label {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.form-control, .form-select {
+  border-color: #e9d5ff;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--vivid-purple);
+  box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.15);
+}
+
 @media (max-width: 767px) {
   .d-flex.justify-content-between {
     flex-direction: column;
@@ -361,46 +423,9 @@ select.form-select-sm:focus {
     width: 100%;
     justify-content: center;
   }
-}
-
-/* Estilo personalizado para el desplegable */
-.select-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.select-dropdown select {
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-}
-
-/* Estilizar el panel desplegable para navegadores webkit */
-select.form-select-sm::-webkit-listbox {
-  background-color: #f5f3ff;
-  border: 1px solid var(--light-purple);
-  border-radius: 8px;
-  padding: 5px;
-}
-
-select.form-select-sm::-webkit-listbox-button {
-  display: none;
-}
-
-/* Personalizar el desplegable para Firefox */
-select.form-select-sm {
-  -moz-appearance: none;
-  text-indent: 0.01px;
-  text-overflow: '';
-}
-
-/* Clases adicionales para controlar hover en opciones con JavaScript */
-.select-option-hover {
-  background-color: var(--ultra-light-purple) !important;
-  color: var(--dark-purple) !important;
-}
-
-.select-option-selected {
-  background-color: var(--secondary-color) !important;
-  color: white !important;
+  
+  .btn-crear-tarea {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

@@ -1,23 +1,20 @@
 :root {
-  /* Nueva paleta de morados pastel */
-  --primary-color: #a78bfa;        /* Morado claro pastel */
-  --secondary-color: #8b5cf6;      /* Violeta medio */
-  --header-bg: #9333ea;            /* Fondo del header - morado oscuro */
-  --sidebar-bg: #4c1d95;           /* Fondo del sidebar (violeta profundo) */
-  --sidebar-header-bg: #3b0764;    /* Fondo de cabeceras del sidebar (violeta muy oscuro) */
-  --sidebar-text: #c4b5fd;         /* Texto del sidebar (lavanda claro) */
-  --sidebar-active: #a78bfa;       /* Color de item activo en sidebar (morado pastel) */
-  --content-bg: #ffffff;           /* Fondo del contenido */
-  --text-color: #4c1d95;           /* Color de texto general (violeta oscuro) */
-  --light-text: #f5f3ff;           /* Texto claro (lavanda muy claro) */
+  --primary-color: #a78bfa;
+  --secondary-color: #8b5cf6;
+  --header-bg: #9333ea;
+  --sidebar-bg: #4c1d95;
+  --sidebar-header-bg: #3b0764;
+  --sidebar-text: #c4b5fd;
+  --sidebar-active: #a78bfa;
+  --content-bg: #ffffff;
+  --text-color: #4c1d95;
+  --light-text: #f5f3ff;
   
-  /* Colores de estado */
-  --success-color: #8b5cf6;        /* Violeta */
-  --warning-color: #c4b5fd;        /* Lavanda claro */
-  --danger-color: #7c3aed;         /* Violeta intenso */
-  --info-color: #a78bfa;           /* Morado pastel */
+  --success-color: #8b5cf6;
+  --warning-color: #c4b5fd;
+  --danger-color: #7c3aed;
+  --info-color: #a78bfa;
   
-  /* Variables para elementos específicos */
   --header-height: 60px;
   --sidebar-width: 230px;
   --sidebar-collapsed-width: 0px;
@@ -60,7 +57,6 @@ body {
   flex-direction: column;
 }
 
-/* Header */
 .main-header {
   height: var(--header-height);
   background-color: var(--header-bg);
@@ -100,7 +96,6 @@ body {
   text-decoration: none;
 }
 
-/* Logo cuando el sidebar está colapsado */
 body.sidebar-collapsed .logo {
   width: var(--logo-collapsed-width);
   padding: 0;
@@ -124,7 +119,7 @@ body.sidebar-collapsed .logo span {
   padding: 0 15px;
   cursor: pointer;
   transition: transform 0.3s ease;
-  z-index: 1001; /* Asegurar que esté por encima del logo */
+  z-index: 1001;
   position: relative;
 }
 
@@ -133,7 +128,6 @@ body.sidebar-collapsed .logo span {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Rotar el icono cuando el sidebar está cerrado */
 body.sidebar-collapsed .sidebar-toggle i {
   transform: rotate(180deg);
 }
@@ -155,7 +149,6 @@ body.sidebar-collapsed .sidebar-toggle i {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Sidebar */
 .main-sidebar {
   width: var(--sidebar-width);
   background-color: var(--sidebar-bg);
@@ -169,7 +162,6 @@ body.sidebar-collapsed .sidebar-toggle i {
   box-shadow: 2px 0 5px rgba(76, 29, 149, 0.2);
 }
 
-/* Sidebar colapsado */
 body.sidebar-collapsed .main-sidebar {
   transform: translateX(-100%);
   width: var(--sidebar-collapsed-width);
@@ -228,7 +220,6 @@ body.sidebar-collapsed .content-wrapper {
   text-align: center;
 }
 
-/* Contenido principal */
 .content-wrapper {
   margin-left: var(--sidebar-width);
   margin-top: var(--header-height);
@@ -241,13 +232,11 @@ body.sidebar-collapsed .content-wrapper {
   flex-direction: column;
 }
 
-/* Content container */
 .content-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Cards */
 .card {
   border: none;
   border-radius: 8px;
@@ -269,7 +258,6 @@ body.sidebar-collapsed .content-wrapper {
   border-top: 1px solid rgba(196, 181, 253, 0.3);
 }
 
-/* Tables */
 .table {
   margin-bottom: 0;
 }
@@ -285,7 +273,6 @@ body.sidebar-collapsed .content-wrapper {
   vertical-align: middle;
 }
 
-/* Botones */
 .btn-outline-primary {
   color: var(--secondary-color);
   border-color: var(--secondary-color);
@@ -297,21 +284,18 @@ body.sidebar-collapsed .content-wrapper {
   color: white;
 }
 
-/* Títulos */
 h2 {
   font-weight: 600;
   color: var(--text-color);
   margin-bottom: 1.5rem;
 }
 
-/* Badges */
 .badge {
   padding: 0.5em 1em;
   font-weight: 500;
   border-radius: 30px;
 }
 
-/* Footer */
 .app-footer {
   margin-top: auto;
   background-color: var(--footer-bg);
@@ -441,7 +425,6 @@ h2 {
   transform: translateY(-2px);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .main-sidebar {
     transform: translateX(-100%);
@@ -451,7 +434,6 @@ h2 {
     margin-left: 0;
   }
   
-  /* Mostrar sidebar en móvil cuando está activo */
   body.sidebar-active .main-sidebar {
     transform: translateX(0);
     width: var(--sidebar-width);
@@ -508,7 +490,6 @@ h2 {
   }
 }
 
-/* Estructuras para gráficos */
 .chart-container {
   position: relative;
   margin: 0 auto;

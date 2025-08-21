@@ -139,28 +139,23 @@
                         }
                         
                         @{
-                            // Mostrar todas las páginas si hay menos de 7
                             int startPage = 1;
                             int endPage = Model.TotalPaginas;
                             
-                            // Si hay más de 7 páginas, calcular el rango a mostrar
                             if (Model.TotalPaginas > 7)
                             {
                                 if (Model.PaginaActual <= 4)
                                 {
-                                    // Estamos cerca del inicio, mostrar páginas 1-7
                                     startPage = 1;
                                     endPage = 7;
                                 }
                                 else if (Model.PaginaActual > Model.TotalPaginas - 4)
                                 {
-                                    // Estamos cerca del final
                                     startPage = Model.TotalPaginas - 6;
                                     endPage = Model.TotalPaginas;
                                 }
                                 else
                                 {
-                                    // Estamos en medio
                                     startPage = Model.PaginaActual - 3;
                                     endPage = Model.PaginaActual + 3;
                                 }
@@ -222,7 +217,6 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             if (typeof bootstrap !== 'undefined') {
                 tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -230,7 +224,6 @@
                 });
             }
             
-            // Manejar el cambio en el selector de tamaño de página
             const pageSizeSelector = document.getElementById('pageSizeSelector');
             if (pageSizeSelector) {
                 pageSizeSelector.addEventListener('change', function() {

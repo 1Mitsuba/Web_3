@@ -13,35 +13,28 @@ namespace Web2Oficial.Pages
         public int TotalPaginas { get; set; }
         public int TamanoPagina { get; set; }
         
-        // Opciones de tamaño de página para el selector
         public List<int> OpcionesTamanoPagina { get; } = new List<int> { 5, 10, 15, 25, 50 };
 
         public void OnGet(int pagina = 1, int tamanoPagina = 5)
         {
-            // Asegurarse de que el tamaño de página sea válido
             if (!OpcionesTamanoPagina.Contains(tamanoPagina))
             {
-                tamanoPagina = 5; // Valor predeterminado si el parámetro no es válido
+                tamanoPagina = 5;
             }
             
             TamanoPagina = tamanoPagina;
             
-            // Ruta al archivo JSON
             string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tareas.json");
 
-            // Leer el JSON y deserializarlo
             var jsonContent = System.IO.File.ReadAllText(jsonFilePath);
             var todasLasTareas = JsonSerializer.Deserialize<List<Tarea>>(jsonContent);
 
-            // Filtrar solo las tareas canceladas
             var soloCanceladas = todasLasTareas.Where(t => t.estado == "Cancelado").ToList();
             TotalTareasCanceladas = soloCanceladas.Count;
 
-            // Lógica de paginación
             PaginaActual = pagina < 1 ? 1 : pagina;
             TotalPaginas = (int)Math.Ceiling(soloCanceladas.Count / (double)TamanoPagina);
             
-            // Asegurarse de que la página actual es válida después de cambiar el tamaño de página
             if (PaginaActual > TotalPaginas && TotalPaginas > 0)
             {
                 PaginaActual = TotalPaginas;

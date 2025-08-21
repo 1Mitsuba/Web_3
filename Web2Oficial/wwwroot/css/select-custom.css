@@ -1,6 +1,3 @@
-/* Estilos personalizados para selects con tema morado */
-
-/* Colores */
 :root {
   --select-bg: #f5f3ff;
   --select-border: #c4b5fd;
@@ -12,13 +9,11 @@
   --select-shadow: rgba(139, 92, 246, 0.25);
 }
 
-/* Contenedor personalizado */
 .select-dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Estilizado base del select */
 .custom-select {
   background-color: white;
   border: 1px solid var(--select-border);
@@ -36,14 +31,12 @@
   background-size: 12px;
 }
 
-/* Estilo de enfoque */
 .custom-select:focus {
   border-color: var(--select-selected-bg);
   box-shadow: 0 0 0 0.25rem var(--select-shadow);
   outline: none;
 }
 
-/* Opciones personalizadas */
 .custom-select option {
   background-color: var(--select-bg);
   color: var(--select-text);
@@ -51,21 +44,16 @@
   font-weight: 500;
 }
 
-/* Opción seleccionada */
 .custom-select option:checked {
   background-color: var(--select-selected-bg);
   color: var(--select-selected-text);
 }
 
-/* Opción al pasar el mouse */
 .custom-select option:hover {
   background-color: var(--select-hover-bg);
   color: var(--select-hover-text);
 }
 
-/* Estilos específicos para cada navegador */
-
-/* Chrome/Safari */
 .custom-select::-webkit-scrollbar {
   width: 8px;
 }
@@ -79,28 +67,34 @@
   background-color: var(--select-bg);
 }
 
-/* Firefox */
 .custom-select {
   scrollbar-width: thin;
   scrollbar-color: var(--select-selected-bg) var(--select-bg);
 }
 
-/* IE/Edge */
 .custom-select::-ms-expand {
   display: none;
 }
 
-/* Estilo para el área desplegada */
 .custom-select option {
   margin: 5px;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
 
-/* Estilo específico para opciones de tamaño de página */
 .purple-option {
   background-color: var(--select-bg) !important;
   color: var(--select-text) !important;
   padding: 8px !important;
   border-radius: 4px !important;
+}
+
+.select-option-hover {
+  background-color: var(--select-hover-bg) !important;
+  color: var(--select-hover-text) !important;
+}
+
+.select-option-selected {
+  background-color: var(--select-selected-bg) !important;
+  color: var(--select-selected-text) !important;
 }

@@ -1,9 +1,7 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Write your JavaScript code.
-document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar tooltips de Bootstrap si existen
+document.addEventListener('DOMContentLoaded', function () {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     if (typeof bootstrap !== 'undefined') {
         tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -11,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Efectos hover para las filas de la tabla
     const tableRows = document.querySelectorAll('.grid-item');
     
     tableRows.forEach(item => {
@@ -25,15 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Mejorar apariencia del selector dropdown
     const pageSizeSelector = document.getElementById('pageSizeSelector');
     if (pageSizeSelector) {
-        // Agregar evento change para la redirección
         pageSizeSelector.addEventListener('change', function() {
             window.location.href = '?pagina=1&tamanoPagina=' + this.value;
         });
         
-        // Agregar efectos visuales al selector
         pageSizeSelector.addEventListener('focus', function() {
             this.style.borderColor = '#8b5cf6';
             this.style.boxShadow = '0 0 0 0.25rem rgba(139, 92, 246, 0.25)';
@@ -43,10 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = 'none';
         });
         
-        // Personalizar opciones del selector
         const options = pageSizeSelector.querySelectorAll('option');
         options.forEach(option => {
-            // Establecer estilos base para todas las opciones
             option.style.backgroundColor = '#f5f3ff';
             option.style.color = '#5b21b6';
             option.style.padding = '10px';
@@ -58,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.style.color = 'white';
             }
             
-            // Agregar eventos de mouse para simular hover
             option.addEventListener('mouseover', function() {
                 if (!this.selected) {
                     this.style.backgroundColor = '#e9d5ff';
@@ -72,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        // Observar cambios en el selector para mantener los estilos
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.type === 'attributes' || mutation.type === 'childList') {
@@ -98,33 +88,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Inicializar componentes cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
-    // Configuración del sidebar
     const sidebarToggle = document.getElementById('sidebarToggle');
     const body = document.body;
     const mainSidebar = document.querySelector('.main-sidebar');
     const logo = document.querySelector('.logo');
     
-    // Verificar si se debe colapsar el sidebar al inicio (recuperar del localStorage)
     const sidebarState = localStorage.getItem('sidebarState');
     if (sidebarState === 'collapsed') {
         body.classList.add('sidebar-collapsed');
     }
     
-    // Función para alternar el estado del sidebar
     function toggleSidebar() {
-        // Toggle de la clase en el body
         body.classList.toggle('sidebar-collapsed');
         
-        // Ajustar el logo según el estado del sidebar
         if (body.classList.contains('sidebar-collapsed')) {
             logo.classList.add('collapsed');
         } else {
             logo.classList.remove('collapsed');
         }
         
-        // Guardar el estado en localStorage
         if (body.classList.contains('sidebar-collapsed')) {
             localStorage.setItem('sidebarState', 'collapsed');
         } else {
@@ -132,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Añadir evento al botón de toggle
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function(e) {
             e.preventDefault();
@@ -141,10 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Manejo de clic fuera del sidebar para cerrarlo en móviles
     if (window.innerWidth <= 768) {
         document.addEventListener('click', function(event) {
-            // Si el sidebar está visible en móvil y se hace clic fuera de él, cerrarlo
             if (body.classList.contains('sidebar-active') && 
                 !mainSidebar.contains(event.target) && 
                 !sidebarToggle.contains(event.target)) {
@@ -152,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // En móviles, al hacer clic en el toggle, usamos la clase sidebar-active
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -162,14 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Marcar la página actual como activa en el sidebar
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
     
     sidebarLinks.forEach(link => {
         const href = link.getAttribute('href').replace('~', '');
         
-        // Comprobar si es la página actual
         if (currentPath === '/' && href === '/Index') {
             link.classList.add('active');
         } else if (currentPath !== '/' && href !== '/Index' && currentPath.includes(href)) {
@@ -177,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Inicializar tooltips de Bootstrap
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     if (typeof bootstrap !== 'undefined') {
         tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -185,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Inicializar popovers de Bootstrap
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     if (typeof bootstrap !== 'undefined') {
         popoverTriggerList.map(function (popoverTriggerEl) {
@@ -193,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Efecto hover para elementos de la tabla
     const tableRows = document.querySelectorAll('.table tbody tr');
     tableRows.forEach(row => {
         row.addEventListener('mouseenter', function() {
@@ -205,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Animación de entrada para el contenido principal
     const mainContent = document.querySelector('main');
     if (mainContent) {
         mainContent.style.opacity = '0';
@@ -218,11 +191,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
     
-    // Forzar estilos personalizados para los select
     const allSelects = document.querySelectorAll('select.form-select-sm');
     allSelects.forEach(select => {
         select.addEventListener('mousedown', function(e) {
-            // Esta línea es solo un truco para forzar el redibujado de los estilos
             document.body.style.overflow = document.body.style.overflow;
         });
     });
