@@ -5,7 +5,7 @@
 }
 
 <div class="content-container">
-    <h2 class="mb-4">Motivos de Cancelación</h2>
+    <!--<h2 class="mb-4">Motivos de Cancelación</h2>
     
     <div class="row">
         <div class="col-md-8 mx-auto">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     
     <h5 class="mt-4 mb-3">Registro de Cancelaciones</h5>
 
@@ -148,28 +148,23 @@
                         }
                         
                         @{
-                            // Mostrar todas las páginas si hay menos de 7
                             int startPage = 1;
                             int endPage = Model.TotalPaginas;
                             
-                            // Si hay más de 7 páginas, calcular el rango a mostrar
                             if (Model.TotalPaginas > 7)
                             {
                                 if (Model.PaginaActual <= 4)
                                 {
-                                    // Estamos cerca del inicio, mostrar páginas 1-7
                                     startPage = 1;
                                     endPage = 7;
                                 }
                                 else if (Model.PaginaActual > Model.TotalPaginas - 4)
                                 {
-                                    // Estamos cerca del final
                                     startPage = Model.TotalPaginas - 6;
                                     endPage = Model.TotalPaginas;
                                 }
                                 else
                                 {
-                                    // Estamos en medio
                                     startPage = Model.PaginaActual - 3;
                                     endPage = Model.PaginaActual + 3;
                                 }
@@ -200,9 +195,8 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             if (typeof bootstrap !== 'undefined') {
                 tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -210,7 +204,6 @@
                 });
             }
             
-            // Manejar el cambio en el selector de tamaño de página
             const pageSizeSelector = document.getElementById('pageSizeSelector');
             if (pageSizeSelector) {
                 pageSizeSelector.addEventListener('change', function() {
@@ -218,7 +211,6 @@
                 });
             }
             
-            // Gráfico de motivos de cancelación con tamaño ajustado
             const ctx = document.getElementById('cancelacionesChart').getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
@@ -227,10 +219,10 @@
                     datasets: [{
                         data: [40, 25, 20, 15],
                         backgroundColor: [
-                            '#8a97e0', // Morado pastel
-                            '#6478d3', // Azul-morado
-                            '#a5b4fc', // Lavanda claro
-                            '#4b6cb7'  // Azul medio
+                            '#8a97e0', 
+                            '#6478d3', 
+                            '#a5b4fc', 
+                            '#4b6cb7'  
                         ],
                         borderWidth: 0
                     }]
@@ -254,5 +246,5 @@
                 }
             });
         });
-    </script>
+    </script>-->
 }
