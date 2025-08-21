@@ -7,7 +7,7 @@
   },
   {
     "idTarea": "2",
-    "nombreTarea": "Planificar menú semanal",
+    "nombreTarea": "Planificar menï¿½ semanal",
     "fechaVencimiento": "20/08/2025",
     "estado": "Pendiente"
   },
@@ -19,7 +19,7 @@
   },
   {
     "idTarea": "4",
-    "nombreTarea": "Comprar víveres",
+    "nombreTarea": "Comprar vï¿½veres",
     "fechaVencimiento": "20/08/2025",
     "estado": "Finalizado"
   },
@@ -67,7 +67,7 @@
   },
   {
     "idTarea": "12",
-    "nombreTarea": "Llevar la ropa a la lavandería",
+    "nombreTarea": "Llevar la ropa a la lavanderï¿½a",
     "fechaVencimiento": "22/08/2025",
     "estado": "Pendiente"
   },
@@ -103,7 +103,7 @@
   },
   {
     "idTarea": "18",
-    "nombreTarea": "Limpiar el baño",
+    "nombreTarea": "Limpiar el baï¿½o",
     "fechaVencimiento": "24/08/2025",
     "estado": "Pendiente"
   },
@@ -115,31 +115,31 @@
   },
   {
     "idTarea": "20",
-    "nombreTarea": "Organizar un cajón de ropa",
+    "nombreTarea": "Organizar un cajï¿½n de ropa",
     "fechaVencimiento": "25/08/2025",
     "estado": "Pendiente"
   },
   {
     "idTarea": "21",
-    "nombreTarea": "Programar la reunión del equipo",
+    "nombreTarea": "Programar la reuniï¿½n del equipo",
     "fechaVencimiento": "22/08/2025",
     "estado": "En curso"
   },
   {
     "idTarea": "22",
-    "nombreTarea": "Terminar el capítulo de un libro",
+    "nombreTarea": "Terminar el capï¿½tulo de un libro",
     "fechaVencimiento": "21/08/2025",
     "estado": "Pendiente"
   },
   {
     "idTarea": "23",
-    "nombreTarea": "Preparar la comida para mañana",
+    "nombreTarea": "Preparar la comida para maï¿½ana",
     "fechaVencimiento": "20/08/2025",
     "estado": "En curso"
   },
   {
     "idTarea": "24",
-    "nombreTarea": "Agendar cita con el médico",
+    "nombreTarea": "Agendar cita con el mï¿½dico",
     "fechaVencimiento": "26/08/2025",
     "estado": "Pendiente"
   },
@@ -151,7 +151,7 @@
   },
   {
     "idTarea": "26",
-    "nombreTarea": "Revisar los correos electrónicos",
+    "nombreTarea": "Revisar los correos electrï¿½nicos",
     "fechaVencimiento": "19/08/2025",
     "estado": "Finalizado"
   },

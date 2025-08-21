@@ -98,6 +98,44 @@
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h5 class="footer-title">MP MiPanel</h5>
+                        <p class="footer-description">
+                            Sistema de gestión de tareas y productividad personal
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h5 class="footer-title">Enlaces</h5>
+                        <ul class="footer-links">
+                            <li><a href="~/Index">Inicio</a></li>
+                            <li><a href="~/Concluida">Tareas Finalizadas</a></li>
+                            <li><a href="~/Privacy">Política de Privacidad</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h5 class="footer-title">Contacto</h5>
+                        <ul class="footer-contact">
+                            <li><i class="bi bi-envelope me-2"></i>contacto@mipanel.com</li>
+                            <li><i class="bi bi-telephone me-2"></i>(+51) 123 456 789</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-copyright">
+                        &copy; @DateTime.Now.Year - MP MiPanel - Todos los derechos reservados
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
