@@ -348,8 +348,9 @@ select.form-select-sm:focus {
 
 .modal {
   z-index: 1055;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0, 0,00);
   pointer-events: auto;
+  backdrop-filter:blur(2px);
 }
 
 .modal-backdrop {
